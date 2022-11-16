@@ -1,10 +1,21 @@
-import React from 'react'
-
+import { React, useState} from 'react'
+import Landing from './Landing';
 function RecipeSearch() {
+  const [visible, setVisible] = useState(false)
   return (
-    <div>
+    <>
       Recipe Search.
-    </div>
+      {/* <button onClick={ () => {
+          setVisible(!visible);
+        }}>
+          Go Back
+        </button>
+        {visible && <Landing />} */}
+
+      
+    </>
+
+    
   )
 }
 

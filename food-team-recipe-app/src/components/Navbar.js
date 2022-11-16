@@ -7,9 +7,9 @@ function Nav() {
             <li className="nav-item"><NavLink className={({ isActive }) => "nav-link " + (isActive ? " active" : "")}
                 to="/" end>Home</NavLink></li>
             <li className="nav-item"><NavLink className={({ isActive }) => "nav-link " + (isActive ? " active" : "")}
-                to="/RecipeResults">RecipeResults</NavLink></li>
+                to="/RecipeInfo">Recipe Info</NavLink></li>
             <li className="nav-item"><NavLink className={({ isActive }) => "nav-link " + (isActive ? " active" : "")}
-                to="/RecipeSearch">RecipeSearch</NavLink></li>
+                to="/RecipeSearch">Recipe Search</NavLink></li>
         </ul>
     )
 }

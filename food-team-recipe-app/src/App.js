@@ -3,18 +3,21 @@ import {
   Route
 } from "react-router-dom";
 import Nav from './components/Navbar';
-import RecipeResults from './components/RecipeResults';
+import RecipeInfo from './components/RecipeInfo';
 import RecipeSearch from './components/RecipeSearch';
 import Landing from './components/Landing'
+import Missing from './components/Missing'
+
 
 function App() {
   return (
     <>
       <Nav />
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/RecipeSearch" element={<RecipeSearch />} />
-        <Route path="/RecipeResults" element={<RecipeResults />} />
+        <Route exact path="/" element={<Landing />} />
+        <Route exact path="/RecipeSearch" element={<RecipeSearch />} />
+        <Route exact path="/RecipeInfo" element={<RecipeInfo  />} />
+        <Route path="*" element={<Missing />} />
       </Routes>
     </>  
   );
