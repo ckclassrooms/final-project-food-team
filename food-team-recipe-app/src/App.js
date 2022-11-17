@@ -8,7 +8,6 @@ import RecipeSearch from './components/RecipeSearch';
 import Landing from './components/Landing'
 import Missing from './components/Missing'
 
-
 function App() {
   return (
     <>

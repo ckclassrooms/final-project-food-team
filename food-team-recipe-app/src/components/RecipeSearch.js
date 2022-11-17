@@ -1,7 +1,5 @@
-import { React, useState} from 'react'
-import Landing from './Landing';
 function RecipeSearch() {
-  const [visible, setVisible] = useState(false)
+  //const [visible, setVisible] = useState(false)
   return (
     <>
       Recipe Search.
