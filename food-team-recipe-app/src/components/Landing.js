@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import logo from '../components/InitialData/logo.svg';
 import './component.css';
 import InitialData from '../components/InitialData/initial-data.json'
+import SearchBar from './SearchBar';
 
 const fetchRecipe = () => {
   let finalQuery = "https://api.edamam.com/api/recipes/v2?type=public&q=Chicken%20Tinga%20Nachos%20Recipe&app_id=4d17f433&app_key=8500fd68b54d0b79b132671796c6515f&mealType=Breakfast"
@@ -20,10 +21,9 @@ function Landing() {
   const initialData = InitialData.hits
     return (
         <>
-          <img src={logo} className="App-logo" alt="logo" />
           <p> Welcome to the recipes app. </p>
           <a className="App-link" href="https://github.com/ckclassrooms/final-project-proposal-food-team" target="_blank" rel="noopener noreferrer"> Repository </a>
-          {/* <br/> <br/> <SearchBar /> <br/>  */}
+          <br/> <br/> <SearchBar /> <br/> 
           <div id="loadedlist">
             <h2> Some recipes to try </h2>
               <ul>

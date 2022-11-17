@@ -22,6 +22,7 @@ function RecipeInfo(props) {
     if(state === null || state === undefined) {  
       navigate('/'); 
     } else {
+      // console.log(state)
       const tempIngredients = [];
       const tempIngredientList = [];
       state.ingredients.forEach(elem => {
