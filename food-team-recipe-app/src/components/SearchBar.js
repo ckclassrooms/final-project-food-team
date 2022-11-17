@@ -16,15 +16,15 @@ function SearchBar() {
 
     return (
         <form action="/" method="get" onSubmit={subMitHandler}>
-        <input
-            onChange={(e) => setInput(e.target.value)}
-            type="text"
-            id="header-search"
-            placeholder="Search recipes"
-            name="s" 
-        />
-        <button type="submit">Search</button>
-    </form>
+            <input
+                onChange={(e) => setInput(e.target.value)}
+                type="text"
+                id="header-search"
+                placeholder="Search recipes"
+                name="s" 
+            />
+            <button type="submit">Search</button>
+        </form>
     );
 }
 

@@ -9,11 +9,19 @@ import tacosalad from '../components/InitialData/tacosalad.jpeg'
 import turk from '../components/InitialData/turk.webp'
 import vegtacochili from '../components/InitialData/vegtacochili.webp'
 import noimg from '../components/InitialData/noimg.gif'
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+
+
+function handlePrev() {}
 
 function RecipeInfo(props) {
   const { state } = useLocation();
   const [ingredients, setIngredients] = useState([]);
   const [ingredientList, setIngredientList] = useState([]);
+  const [url, setUrl] = useState("");
   const [img, setImg] = useState(null);
   const [recipeName, setRecipeName] = useState('food');
   let navigate = useNavigate();
@@ -30,7 +38,8 @@ function RecipeInfo(props) {
         tempIngredients.push({ingredient : elem.food, price:'N/A'});
       })
       setIngredients(tempIngredients);
-      setIngredientList(tempIngredientList)
+      setIngredientList(tempIngredientList);
+      setUrl(state.url);
       setRecipeName(state.label);
       if(state.label === 'Taco Chili Soup') {
         setImg(noimg)
@@ -48,6 +57,14 @@ function RecipeInfo(props) {
     }// eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
+
 const [columnDefs] = useState([
   {
     field: 'Add to order',
@@ -62,7 +79,7 @@ const [columnDefs] = useState([
   return (
     <>
       <div>
-        <h1>Recipe information for {recipeName}</h1>
+        <h1><a target="_blank" href={url}>{recipeName}</a></h1>
         <br/>
         <img src={img} width="auto" height="500" alt={recipeName}></img>
         <br/>
@@ -70,9 +87,13 @@ const [columnDefs] = useState([
       <br/>
       <div className='recipePrep'>
         <h2>{ingredients.length} ingredients: </h2>
-        <ul>
-          {ingredientList}
-        </ul>
+        <Box sx={{ width: '50%' }}>
+          <Stack spacing={0.5}>
+            {state.ingredients.map(elem => {
+              return <Item className='ingredientList' key={elem.food}>{elem.quantity === 0 ? '1 optional' : elem.quantity} {elem.measure} {elem.food}</Item>
+            })}
+          </Stack>
+    </Box>
       </div>
       <br/>
       
@@ -81,6 +102,12 @@ const [columnDefs] = useState([
           rowData={ingredients}
           columnDefs={columnDefs}>
         </AgGridReact>
+      </div>
+      <div className="next_prev">
+        <ul>
+        <button type="submit" onClick={() => navigate('/')}>Previous</button>
+        <button type="submit">Next</button>
+        </ul>
       </div>
     </>
   )
