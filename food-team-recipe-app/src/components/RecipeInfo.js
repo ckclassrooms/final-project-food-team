@@ -39,7 +39,7 @@ function RecipeInfo(props) {
         setImg(tacosalad)
       } else if(state.label === 'Taco Stuffed Burger') {
         setImg(tacoburger)
-      } else if(state.label === 'Turkey chili & rice tacos') {
+      } else if(state.label === 'Turkey chilli & rice tacos') {
         setImg(turk)
       } else if(state.label === 'Beef Taco Roll-Ups') {
         setImg(beeftaco)
