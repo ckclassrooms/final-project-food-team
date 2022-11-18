@@ -3,8 +3,8 @@ Homework F.2 - Final Project MVP
 We have deployed our react web application using Netlify. Link to deployed app: https://starlit-twilight-fde55f.netlify.app/
 
 Right now, our app is able to do three things 
-1) Show details (ingredients and instructions) about some preconfigured recipes and
-2) Allow users to search for any recipe and get see the results list
+1) Show details (ingredients and instructions) about some preconfigured recipes
+2) Allow users to search for any recipe and get the results list
 3) Give users the option to visit the url of the recipe
 
 Example-
