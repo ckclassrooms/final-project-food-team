@@ -1,7 +1,26 @@
 Homework F.2 - Final Project MVP
 
-We have deployed our web application using Netlify. The link to that has been provided in the Readme file.
+We have deployed our react web application using Netlify. Link to deployed app: https://starlit-twilight-fde55f.netlify.app/
 
-Tech Stack- For the front-end, we are going to use React, HTML, and CSS. We aren't going to have a back-end for now, but we might consider using Express if needed in the future. Similarly, for the database, we aren't going to use one initially as it is not required for our fully Client-side application, but we might use Supabase if required. The third party APIs in our application are the Recipes API and the Kroger (or Instacart) API.
+Right now, our app is able to do three things 
+- 1) Show details (ingredient and instructions) about some preconfigured recipes and
+- 2) Allow users to search for any recipe and get see the results list
+- 3) Give users the option to visit the url of the recipe
 
-MVP - As a starting point, we would be creating a web application that combines the Recipes API and the Kroger API in a very fundamental way to display the the search results (recipes) returned from the Recipes API extracted using any recipe query. For our MVP we will have a page with pre selected recipes, then when a user clicks a recipe we will then display the prices of each ingredient to the user and we will list all the incredients and the quantities required for a particular recipe. Moving forward from this MVP we will then call the Kroger API to provide a way to list the stores that are offering a particular ingredient to purchase it. We still don't know what access levels these APIs provide in their free tiers, so our initial design would be very dependent on that, but the basic idea is that any user would be able to search for a recipe, get the results and then see the ingredients needed for that particular recipe and the stores which are offering them, as shown in the image below.
+Example-
+
+This is the home page of our website. It has some recipe options shown to the users and a search bar to search for the recipes.
+<img width="1440" alt="Screen Shot 2022-11-18 at 4 37 04 PM" src="https://user-images.githubusercontent.com/97759670/202814644-9b6750a2-d002-479d-9034-e0d2dc6e566e.png">
+
+If the user search for "pizza", then they will get these results
+<img width="1440" alt="Screen Shot 2022-11-18 at 4 38 41 PM" src="https://user-images.githubusercontent.com/97759670/202814786-1a8dcb5f-143d-4a12-88ad-b97dc79abfe2.png">
+
+
+This is the page that shows the detailed view about a recipe and the ability to select ingredient.
+<img width="730" alt="Screen Shot 2022-11-18 at 4 39 34 PM" src="https://user-images.githubusercontent.com/97759670/202814865-68645dfe-be40-41d3-8b25-a76b2b62904a.png">
+
+
+
+
+
+Our goal for the MVP was to have a functional website which would not only have the above features, but also allow the users to buy the ingredients using the Kroger API, which we haven't been able to do yet. So, our next goal would be to add the Kroger API, so that the users can see the prices of items and add those to their carts. Another goal would be to design the app better and provide more useful information, so that the users can have all the information they need in our app, without them going to the orginal url.
