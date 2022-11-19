@@ -14,7 +14,6 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 
-
 function handlePrev() {}
 
 function RecipeInfo(props) {
@@ -35,25 +34,32 @@ function RecipeInfo(props) {
       const tempIngredientList = [];
       state.ingredients.forEach(elem => {
         tempIngredientList.push( <li className='ingredientList' key={elem.food}>{elem.quantity === 0 ? '1 optional' : elem.quantity} {elem.measure} {elem.food}</li> );
-        tempIngredients.push({ingredient : elem.food, price:'N/A'});
+        tempIngredients.push({ingredient : elem.food.toUpperCase(), price:'N/A'});
       })
       setIngredients(tempIngredients);
       setIngredientList(tempIngredientList);
       setUrl(state.url);
       setRecipeName(state.label);
-      if(state.label === 'Taco Chili Soup') {
-        setImg(noimg)
-      } else if(state.label === 'Vegetarian Taco Chili') {
-        setImg(vegtacochili)
-      } else if(state.label === 'Classic Taco Salad') {
-        setImg(tacosalad)
-      } else if(state.label === 'Taco Stuffed Burger') {
-        setImg(tacoburger)
-      } else if(state.label === 'Turkey chilli & rice tacos') {
-        setImg(turk)
-      } else if(state.label === 'Beef Taco Roll-Ups') {
-        setImg(beeftaco)
-      } else {}
+      if (state.image === "") {
+        setImg(noimg);
+      } else {
+        setImg(state.image);
+      }
+      
+      
+      // if(state.label === 'Taco Chili Soup') {
+      //   setImg(noimg)
+      // } else if(state.label === 'Vegetarian Taco Chili') {
+      //   setImg(vegtacochili)
+      // } else if(state.label === 'Classic Taco Salad') {
+      //   setImg(tacosalad)
+      // } else if(state.label === 'Taco Stuffed Burger') {
+      //   setImg(tacoburger)
+      // } else if(state.label === 'Turkey chilli & rice tacos') {
+      //   setImg(turk)
+      // } else if(state.label === 'Beef Taco Roll-Ups') {
+      //   setImg(beeftaco)
+      // } else {}
     }// eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
@@ -86,11 +92,12 @@ const [columnDefs] = useState([
       </div>
       <br/>
       <div className='recipePrep'>
+        <p>{state.label}</p>
         <h2>{ingredients.length} ingredients: </h2>
         <Box sx={{ width: '50%' }}>
           <Stack spacing={0.5}>
             {state.ingredients.map(elem => {
-              return <Item className='ingredientList' key={elem.food}>{elem.quantity === 0 ? '1 optional' : elem.quantity} {elem.measure} {elem.food}</Item>
+              return <Item className='ingredientList' key={elem.food}>{elem.text.toUpperCase()}</Item>
             })}
           </Stack>
     </Box>

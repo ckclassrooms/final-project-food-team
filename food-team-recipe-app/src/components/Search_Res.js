@@ -1,6 +1,8 @@
 import { React, useState } from 'react'
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useEffect } from 'react'
+import SearchBar from './SearchBar';
+
 
 
 function Search_Res() {
@@ -19,21 +21,21 @@ function Search_Res() {
         const response = await fetch(url);
         await response.json().then(data_elem => {
             data_elem.hits.forEach(element => {
-                results_list.push(element.recipe.label)
+                results_list.push(element.recipe)
             });
         });
         setResults(results_list);
-        console.log(results)
     }
    
     return (
         <>
           <div id="results">
+          {/* <br/> <br/> <SearchBar /> <br/>  */}
             <h2> Search Results for query: {query.query} </h2>
               <ul>
                 {
-                    results.map((recipe_name, index) => {
-                        return <li className='recipeList' key={recipe_name + index}> {recipe_name} </li>
+                    results.map((recipe, index) => {
+                        return <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {recipe}>{recipe.label}</Link> Source: {recipe.source}</li>
                     })
                 }
               </ul>            
