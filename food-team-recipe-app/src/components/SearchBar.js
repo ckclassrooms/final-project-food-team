@@ -10,7 +10,7 @@ function SearchBar() {
 
     const subMitHandler = event => {
         event.preventDefault();
-        navigate('/Search_Res/' + input);
+        navigate('/SearchResult/' + input);
     }
 
     return (

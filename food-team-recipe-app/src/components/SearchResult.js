@@ -1,11 +1,13 @@
 import { React, useState } from 'react'
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from 'react'
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import SearchBar from './SearchBar';
 
-
-
-function Search_Res() {
+function SearchResult() {
+    let navigate = useNavigate();
     const [results, setResults] = useState([]);
     let query = useParams();
 
@@ -35,13 +37,19 @@ function Search_Res() {
               <ul>
                 {
                     results.map((recipe, index) => {
-                        return <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {recipe}>{recipe.label}</Link> Source: {recipe.source}</li>
+                        return <> <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {recipe}>{recipe.label}</Link> Source: {recipe.source}</li> <br></br> </>
                     })
                 }
               </ul>            
           </div>
+          <Stack direction="row" spacing={60}>
+            <Button onClick={() => navigate('/')} variant="contained" startIcon={<ChevronLeftIcon />} color="error" >
+            Go Back
+            </Button>
+          </Stack>
+          <br></br>
         </>
     )
 }
 
-export default Search_Res
+export default SearchResult

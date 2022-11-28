@@ -1,6 +1,5 @@
 import { React } from 'react'
 import { Link } from "react-router-dom";
-import logo from '../components/InitialData/logo.svg';
 import './component.css';
 import InitialData from '../components/InitialData/initial-data.json'
 import SearchBar from './SearchBar';

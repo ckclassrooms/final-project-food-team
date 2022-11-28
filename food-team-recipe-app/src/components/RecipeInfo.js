@@ -9,17 +9,15 @@ import tacosalad from '../components/InitialData/tacosalad.jpeg'
 import turk from '../components/InitialData/turk.webp'
 import vegtacochili from '../components/InitialData/vegtacochili.webp'
 import noimg from '../components/InitialData/noimg.gif'
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
+import {IconButton, Button, Stack, Paper, Box, styled} from '@mui/material';
+import {CheckCircle, ChevronLeft, Link} from '@mui/icons-material';
 
 function handlePrev() {}
 
 function RecipeInfo(props) {
   const { state } = useLocation();
   const [ingredients, setIngredients] = useState([]);
-  const [ingredientList, setIngredientList] = useState([]);
+  //const [ingredientList, setIngredientList] = useState([]);
   const [url, setUrl] = useState("");
   const [img, setImg] = useState(null);
   const [recipeName, setRecipeName] = useState('food');
@@ -29,7 +27,6 @@ function RecipeInfo(props) {
     if(state === null || state === undefined) {  
       navigate('/'); 
     } else {
-      // console.log(state)
       const tempIngredients = [];
       const tempIngredientList = [];
       state.ingredients.forEach(elem => {
@@ -37,31 +34,31 @@ function RecipeInfo(props) {
         tempIngredients.push({ingredient : elem.food.toUpperCase(), price:'N/A'});
       })
       setIngredients(tempIngredients);
-      setIngredientList(tempIngredientList);
+      //setIngredientList(tempIngredientList);
       setUrl(state.url);
       setRecipeName(state.label);
-      if (state.image === "") {
-        setImg(noimg);
-      } else {
-        setImg(state.image);
+      if(state.label === 'Taco Chili Soup') {
+        setImg(noimg)
+      } else if(state.label === 'Vegetarian Taco Chili') {
+        setImg(vegtacochili)
+      } else if(state.label === 'Classic Taco Salad') {
+        setImg(tacosalad)
+      } else if(state.label === 'Taco Stuffed Burger') {
+        setImg(tacoburger)
+      } else if(state.label === 'Turkey chilli & rice tacos') {
+        setImg(turk)
+      } else if(state.label === 'Beef Taco Roll-Ups') {
+        setImg(beeftaco)
+      } else { // need the above checks for the prebuilt recipes imags to load cause the api calls expire.
+        if (state.image !== "") {
+          setImg(state.image);
+        } else {
+          setImg(noimg);
+        }
       }
-      
-      
-      // if(state.label === 'Taco Chili Soup') {
-      //   setImg(noimg)
-      // } else if(state.label === 'Vegetarian Taco Chili') {
-      //   setImg(vegtacochili)
-      // } else if(state.label === 'Classic Taco Salad') {
-      //   setImg(tacosalad)
-      // } else if(state.label === 'Taco Stuffed Burger') {
-      //   setImg(tacoburger)
-      // } else if(state.label === 'Turkey chilli & rice tacos') {
-      //   setImg(turk)
-      // } else if(state.label === 'Beef Taco Roll-Ups') {
-      //   setImg(beeftaco)
-      // } else {}
     }// eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+  //console.log(state);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -85,14 +82,20 @@ const [columnDefs] = useState([
   return (
     <>
       <div>
-        <h1><a target="_blank" href={url}>{recipeName}</a></h1>
+        <>
+          <h1>{recipeName}</h1>
+          <IconButton size="small" onClick={event =>  window.open(url,'_blank')} color="primary" aria-label="link to website" component="label">
+            <a target="_blank" href={url}></a>
+            <Link size="large" />
+            Link to Recipe
+          </IconButton>
+        </>
         <br/>
-        <img src={img} width="auto" height="500" alt={recipeName}></img>
+        <img src={img} width="auto" height="500" alt={recipeName} aria-label={recipeName}></img>
         <br/>
       </div>
       <br/>
       <div className='recipePrep'>
-        <p>{state.label}</p>
         <h2>{ingredients.length} ingredients: </h2>
         <Box sx={{ width: '50%' }}>
           <Stack spacing={0.5}>
@@ -106,16 +109,23 @@ const [columnDefs] = useState([
       
       <div className="ag-theme-alpine" style={{height: 500, width: 800}}>
         <AgGridReact
+          rowSelection={'multiple'}
+          rowMultiSelectWithClick={true}
           rowData={ingredients}
-          columnDefs={columnDefs}>
+          columnDefs={columnDefs}
+        >
         </AgGridReact>
       </div>
-      <div className="next_prev">
-        <ul>
-        <button type="submit" onClick={() => navigate('/')}>Previous</button>
-        <button type="submit">Next</button>
-        </ul>
-      </div>
+      <br></br>
+      <Stack direction="row" spacing={60}>
+        <Button onClick={() => navigate('/')} variant="contained" startIcon={<ChevronLeft />} color="error" >
+          Go Back
+        </Button>
+        <Button variant="contained" startIcon={<CheckCircle />} color="success" >
+          Get ingredients
+        </Button>
+      </Stack>
+      <br></br>
     </>
   )
 }
