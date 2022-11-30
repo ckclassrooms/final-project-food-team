@@ -97,9 +97,6 @@ function RecipeInfo(props) {
     if(state === null || state === undefined) {  
       navigate('/'); 
     } else {
-      // if(gridRef !== undefined) {
-      //   gridRef.current.api.showLoadingOverlay();
-      // }
       async function fnAsync() {
         let token = await getKrogerAuth();
         setAccessToken( token.access_token ); // set API auth token. Lasts for 30 min
