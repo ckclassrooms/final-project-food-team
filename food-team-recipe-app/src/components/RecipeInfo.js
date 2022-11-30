@@ -22,6 +22,7 @@ function callProductAPI (ingredient, access_token) {
     const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
     const url = 'https://api.kroger.com/v1/products?filter.term=' + ingredient + '&filter.locationId=01400943';
     var settings = {
+      'Access-Control-Allow-Origin': '*',
       "async": true,
       "crossDomain": true,
       "url": /*proxyurl +*/ url,
@@ -64,6 +65,7 @@ function callProductAPI (ingredient, access_token) {
 function getKrogerAuth () { // set API auth token. Lasts for 30 min
   return new Promise((resolve, reject) => {
     var settings = {
+      'Access-Control-Allow-Origin': '*',
       "async": true,
       "crossDomain": true,
       "url": "https://api.kroger.com/v1/connect/oauth2/token",
