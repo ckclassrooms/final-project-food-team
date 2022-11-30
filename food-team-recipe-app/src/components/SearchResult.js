@@ -37,7 +37,7 @@ function SearchResult() {
               <ul>
                 {
                     results.map((recipe, index) => {
-                        return <> <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {recipe}>{recipe.label}</Link> Source: {recipe.source}</li> <br></br> </>
+                        return <div className="result" key={recipe.label}> <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {recipe}>{recipe.label}</Link> Source: {recipe.source}</li> <br></br> </div>
                     })
                 }
               </ul>            

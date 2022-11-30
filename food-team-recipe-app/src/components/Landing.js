@@ -4,18 +4,6 @@ import './component.css';
 import InitialData from '../components/InitialData/initial-data.json'
 import SearchBar from './SearchBar';
 
-const fetchRecipe = () => {
-  // let finalQuery = "https://api.edamam.com/api/recipes/v2?type=public&q=Chicken%20Tinga%20Nachos%20Recipe&app_id=4d17f433&app_key=8500fd68b54d0b79b132671796c6515f&mealType=Breakfast"
-  //   fetch(finalQuery)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       console.log(data) 
-  //       data.hits.forEach(record => {
-  //         console.log(record);
-  //       })
-  //     })
-}
-
 function Landing() {
   const initialData = InitialData.hits
     return (

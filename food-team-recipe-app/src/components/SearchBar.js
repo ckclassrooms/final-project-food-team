@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Link, Routes, Route, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 
 function SearchBar() {
@@ -8,13 +8,13 @@ function SearchBar() {
     
     const navigate = useNavigate();
 
-    const subMitHandler = event => {
+    const submitHandler = event => {
         event.preventDefault();
         navigate('/SearchResult/' + input);
     }
 
     return (
-        <form action="/" method="get" onSubmit={subMitHandler}>
+        <form action="/" method="get" onSubmit={submitHandler}>
             <input
                 onChange={(e) => setInput(e.target.value)}
                 type="text"
