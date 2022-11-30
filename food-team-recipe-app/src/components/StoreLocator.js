@@ -30,7 +30,7 @@ function getStoreLocation (zipCode, access_token) {
     console.log(response);
   });  
 }
-
+// test
 // function callProductAPI (ingredient, access_token) {
 //   // https://api.kroger.com/v1/products?filter.brand={{BRAND}}&filter.term={{TERM}}&filter.locationId={{LOCATION_ID}}
 //   const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
