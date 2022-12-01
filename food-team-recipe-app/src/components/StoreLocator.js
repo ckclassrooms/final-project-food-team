@@ -1,36 +1,33 @@
-import {useState, useCallback, useEffect} from "react";
+import {useState, useCallback, useEffect, useRef} from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@mui/material';
-import { ChevronLeft } from '@mui/icons-material';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import BtnCellRenderer from "./BtnCellRenderer";
 import $ from 'jquery'
 
 function getStoreLocation (zipCode, access_token) {
   // This API gets product details. ID is neccesary
   //https://api.kroger.com/v1/locations?filter.zipCode.near={zipcode}
-  const proxyurl = "https://mysterious-plains-32016.herokuapp.com/";
-  // to do get product id's here
-  const url = 'https://api.kroger.com/v1/locations?filter.zipCode.near='+ zipCode;
-  var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": proxyurl + url,
-    "method": "GET",
-    "headers": {
-      "Accept": "application/json",
-      // to do add the auth id here
-      "Authorization": "Bearer " + access_token
+  return new Promise((resolve, reject) => {
+    const proxyurl = "https://mysterious-plains-32016.herokuapp.com/";
+    const url = 'https://api.kroger.com/v1/locations?filter.zipCode.near='+ zipCode+'&filter.department=23';
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": proxyurl + url,
+      "method": "GET",
+      "headers": {
+        "Accept": "application/json",
+        "Authorization": "Bearer " + access_token
+      }
     }
-  }
-  
-  $.ajax(settings).done(function (response) {
-    console.log(response);
+    $.ajax(settings).done(function (response) {
+      resolve(response.data)
+    });
   });  
 }
-// test
 // function callProductAPI (ingredient, access_token) {
 //   // https://api.kroger.com/v1/products?filter.brand={{BRAND}}&filter.term={{TERM}}&filter.locationId={{LOCATION_ID}}
 //   const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
@@ -55,12 +52,14 @@ function getStoreLocation (zipCode, access_token) {
 
 function StoreLocator() {
   let navigate = useNavigate();
+  const gridRef = useRef();
   const { state } = useLocation();
-  console.log(state);
   const [zipCode, setZipCode] = useState("");
   const [showStores, setShowStores] = useState(false);
+  const [rowData, setRowData] = useState([]);
   const [accessToken, setAccessToken] = useState('');
   const [ingredients, setIngredients] = useState([]);
+  const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
     if(state === null || state === undefined) {  
@@ -68,37 +67,69 @@ function StoreLocator() {
     } else {
       setAccessToken( state.access_Token ); // set API auth token. Lasts for 30 min
       setIngredients(state.ingredients);
-      //console.log(accessToken)
     }// eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
+  function getDep(elem) {
+    return new Promise((resolve, reject) => {
+      let tempDepartments = [];
+      elem.departments.forEach(ele => {
+        tempDepartments.push(ele.name.toUpperCase());
+      })
+      resolve(tempDepartments);
+    })
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(`The name you entered was: ${zipCode}`);
-    setShowStores(true)
+    async function fnAsync() {
+      let data = await getStoreLocation(zipCode, accessToken);
+      console.log(data);
+      let tempRowData = [];
+      data.forEach(async elem => {
+        let tempDepartments = await getDep(elem);
+        let cnty = 'NONE';
+        if(elem.address.county !== undefined) {cnty = elem.address.county.toUpperCase();}
+        tempRowData.push({ name:elem.name.toUpperCase(), address:elem.address.addressLine1.toUpperCase(), city:elem.address.city.toUpperCase(), county:cnty.toUpperCase(), state:elem.address.state.toUpperCase(), zip:elem.address.zipCode.toUpperCase(), chain:elem.chain.toUpperCase(), dep:tempDepartments, id:elem.locationId });
+      });
+      console.log(tempRowData);
+      setRowData(tempRowData);
+      setShowStores(true);
+    }
+    fnAsync();
+    
   }
 
   const [columnDefs] = useState([
-    { headerName: 'Store Name', field: 'name' },
-    { field: 'address' },
-    { field: 'city' },
-    { field: 'state' },
     {
-      field: '',
-      cellRenderer: BtnCellRenderer,
-      cellRendererParams: {
-        clicked: function(field) {
-          alert(`${field} was clicked`);
-        },
-      },
-    }
+      field: 'Select Store',
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+      showDisabledCheckboxes: true,
+    },
+    { headerName: 'Store Name', field: 'name', resizable: true, autoHeight: true },
+    { field: 'chain', resizable: true, autoHeight: true },
+    { field: 'address', resizable: true, autoHeight: true },
+    { field: 'city', resizable: true, autoHeight: true },
+    { field: 'county', resizable: true, autoHeight: true },
+    { field: 'state', resizable: true, autoHeight: true },
+    { headerName: 'Zip Code', field: 'zip', resizable: true, autoHeight: true },
+    { headerName: 'Store ID', field: 'id',resizable: true, autoHeight: true },
+    { headerName: 'Departments', field: 'dep',resizable: true, autoHeight: true }
   ])
 
   const onGridReady = useCallback((params) => {
     params.gridApi = params.api;
     params.gridColumnApi = params.columnApi;
     params.gridApi.sizeColumnsToFit();
+    gridRef.current.columnApi.autoSizeColumns()
   }, []);
+
+  const onSelectionChanged = () => {
+    const selectedData = gridRef.current.api.getSelectedRows();
+    console.log('Selection Changed', selectedData);
+    selectedData.length > 0 ? setIsSelected(true) : setIsSelected(false);
+  };
 
   return (
     <>
@@ -117,11 +148,14 @@ function StoreLocator() {
       </div>
       }
       {showStores &&
-      <div className="ag-theme-alpine" style={{height: '78vh', width: '85vw'}}>
+      <div className="ag-theme-alpine" style={{height: '80vh', width: '98vw'}}>
         <AgGridReact
+          ref={gridRef}
+          onSelectionChanged={onSelectionChanged}
           style={{ width: '100%', height: '100%' }}
           rowMultiSelectWithClick={false}
-          rowData={[{name: 1}, {address: 2}]}
+          rowSelection={'single'}
+          rowData={!rowData?[{name: 1}, {address: 2}]: rowData}
           columnDefs={columnDefs}
           onGridReady={onGridReady}
         >
@@ -133,6 +167,18 @@ function StoreLocator() {
         <Stack direction="row" spacing={60}>
           <Button onClick={() => navigate('/')} variant="contained" startIcon={<ChevronLeft />} color="error" >
             Go Back
+          </Button>
+          <Button disabled={!isSelected}
+           onClick={
+            () => {
+              let selectedData = gridRef.current.api.getSelectedRows();
+              console.log(selectedData[0]);
+              alert('Redirecting to Kroger Oauth')
+              // Oauth redirects to netlify with a code
+              window.location.href = 'https://api.kroger.com/v1/connect/oauth2/authorize?scope=cart.basic:write&response_type=code&client_id=foodappforschool-043e65debc535226ffbd8fa7ed03f8041525245609739767566&redirect_uri=https://starlit-twilight-fde55f.netlify.app/';
+            } 
+          } variant="contained" startIcon={<ChevronRight />} color="success" >
+            Continue
           </Button>
         </Stack>
       </div>
