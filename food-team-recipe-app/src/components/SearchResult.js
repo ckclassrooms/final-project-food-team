@@ -1,19 +1,21 @@
 import { React, useState } from 'react'
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { useEffect } from 'react'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import SearchBar from './SearchBar';
 
 function SearchResult() {
+    const { state } = useLocation();
+    const authCode = state.auth;
+    console.log('authCode:', authCode);
     let navigate = useNavigate();
     const [results, setResults] = useState([]);
     let query = useParams();
 
 
     useEffect(() => {
-        getRecipes(query.query)
+        getRecipes(query.query)// eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
 
@@ -37,7 +39,7 @@ function SearchResult() {
               <ul>
                 {
                     results.map((recipe, index) => {
-                        return <div className="result" key={recipe.label}> <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {recipe}>{recipe.label}</Link> Source: {recipe.source}</li> <br></br> </div>
+                        return <div className="result" key={recipe.label}> <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {{recipe:recipe, auth:authCode}}>{recipe.label}</Link> Source: {recipe.source}</li> <br></br> </div>
                     })
                 }
               </ul>            

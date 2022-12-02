@@ -2,15 +2,15 @@ import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 
 
-function SearchBar() {
-
+function SearchBar({ authCode }) {
+    console.log('authCode:', authCode);
     const [input, setInput] = useState("");
     
     const navigate = useNavigate();
 
     const submitHandler = event => {
         event.preventDefault();
-        navigate('/SearchResult/' + input);
+        navigate('/SearchResult/' + input, {state : {auth:authCode}});
     }
 
     return (
