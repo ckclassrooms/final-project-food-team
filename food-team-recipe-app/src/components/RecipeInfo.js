@@ -10,7 +10,7 @@ import turk from '../components/InitialData/turk.webp'
 import vegtacochili from '../components/InitialData/vegtacochili.webp'
 import noimg from '../components/InitialData/noimg.gif'
 import {IconButton, Button, Stack, Paper, Box, styled} from '@mui/material';
-import {CheckCircle, ChevronLeft, Link} from '@mui/icons-material';
+import {CheckCircle, ChevronLeft, Link, AddShoppingCart} from '@mui/icons-material';
 import $ from 'jquery'
 
 function handlePrev() {}
@@ -84,12 +84,17 @@ function getKrogerAuth () { // set API auth token. Lasts for 30 min
 }
 
 function RecipeInfo(props) {
-  const { state } = useLocation();
+  const data  = useLocation();
+  const state = data.state.recipe;
+  const auth_Code = data.state.auth;
   const [ingredients, setIngredients] = useState([]);
   const [url, setUrl] = useState("");
   const [img, setImg] = useState(null);
   const [recipeName, setRecipeName] = useState('food');
   const [accessToken, setAccessToken] = useState('');
+  const [authCode, setAuthCode] = useState('');
+  const [hasAuthCode, setHasAuthCode] = useState(false);
+  const [productUPCCodes, setProductUPCCodes] = useState([]);
   let navigate = useNavigate();
   const gridRef = useRef();
 
@@ -110,6 +115,12 @@ function RecipeInfo(props) {
 
       setUrl(state.url);
       setRecipeName(state.label);
+      if(auth_Code !== undefined || auth_Code !== null) {
+        if(auth_Code.length !== 0) {
+          setAuthCode(auth_Code);
+          setHasAuthCode(true);
+        }
+      }
       if(state.label === 'Taco Chili Soup') {
         setImg(noimg)
       } else if(state.label === 'Vegetarian Taco Chili') {
@@ -137,7 +148,7 @@ function RecipeInfo(props) {
       navigate('/'); 
     } else {
       let tempIngredients = [];
-      let tempData = [];
+      let tempUPCs = [];
       let itemPrice = 0;
       async function asyncForEach(array, callback) {
         for (let index = 0; index < array.length; index++) {
@@ -148,11 +159,12 @@ function RecipeInfo(props) {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken);
           itemPrice = data[0].items[0].price.regular;
-          tempData.push(data);
+          tempUPCs.push(data[0].upc);
           console.log('tempIngredients',tempIngredients);
           tempIngredients.push({ingredient : elem.food.toUpperCase(), price:itemPrice});
         });
         setIngredients(tempIngredients);
+        setProductUPCCodes(tempUPCs);
       }
       start();
     }// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -234,9 +246,14 @@ const onGridReady = useCallback((params) => {
           <Button onClick={() => navigate('/')} variant="contained" startIcon={<ChevronLeft />} color="error" >
             Go Back
           </Button>
+          <Stack direction="column" spacing={2}>
+          {hasAuthCode && <Button onClick={ () => console.log(productUPCCodes)/* to do call Kroger Api with product UPC's */ } variant="contained" startIcon={<AddShoppingCart />} color="success" >
+            Add ingredients to Kroger cart
+          </Button>}
           <Button onClick={ () => navigate("/StoreLocator", {replace:true, state : {ingredients:ingredients, access_Token : accessToken} } ) } variant="contained" startIcon={<CheckCircle />} color="success" >
-            Get ingredients
+            Get store information
           </Button>
+          </Stack>
         </Stack>
       </div>
       <br></br>
