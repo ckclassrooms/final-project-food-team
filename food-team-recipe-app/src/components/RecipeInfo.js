@@ -19,7 +19,8 @@ function handlePrev() {}
 function callProductAPI (ingredient, access_token) {
   return new Promise((resolve, reject) => {
   // https://api.kroger.com/v1/products?filter.brand={{BRAND}}&filter.term={{TERM}}&filter.locationId={{LOCATION_ID}}
-    const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
+    //const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
+    const proxyurl = 'https://corsproxy.io/?';
     const url = 'https://api.kroger.com/v1/products?filter.term=' + ingredient + '&filter.locationId=01400943';
     var settings = {
       "async": true,
@@ -63,10 +64,11 @@ function callProductAPI (ingredient, access_token) {
 // note proxy URL is probably need when working on developing
 function getKrogerAuth () { // set API auth token. Lasts for 30 min
   return new Promise((resolve, reject) => {
+    const proxyurl = 'https://corsproxy.io/?';
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url": "https://api.kroger.com/v1/connect/oauth2/token",
+      "url": proxyurl + "https://api.kroger.com/v1/connect/oauth2/token",
       "method": "POST",
       "headers": {
         "Content-Type": "application/x-www-form-urlencoded",

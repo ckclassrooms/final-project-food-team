@@ -11,8 +11,9 @@ function getStoreLocation (zipCode, access_token) {
   // This API gets product details. ID is neccesary
   //https://api.kroger.com/v1/locations?filter.zipCode.near={zipcode}
   return new Promise((resolve, reject) => {
-    const proxyurl = "https://mysterious-plains-32016.herokuapp.com/";
-    const url = 'https://api.kroger.com/v1/locations?filter.zipCode.near='+ zipCode+'&filter.department=23';
+    //const proxyurl = "https://mysterious-plains-32016.herokuapp.com/";
+    const proxyurl = 'https://corsproxy.io/?';
+    const url = proxyurl + 'https://api.kroger.com/v1/locations?filter.zipCode.near='+ zipCode+'&filter.department=23';
     var settings = {
       "async": true,
       "crossDomain": true,

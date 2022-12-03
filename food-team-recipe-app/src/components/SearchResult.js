@@ -20,7 +20,8 @@ function SearchResult() {
 
 
     async function getRecipes(query) {
-        let url = "https://api.edamam.com/api/recipes/v2?q="+ query + "&app_key=8500fd68b54d0b79b132671796c6515f&_cont=CHcVQBtNNQphDmgVQntAEX4Bakt7BQUERmNAC2QUYFV6AQQVX3cRBWcSMFZzAlUGRjFFAzZBMAElAgAAQmxJBGJCZFQgVRFqX3cWQT1OcV9xBB8VADQWVhFCPwoxXVZEITQeVDcBaR4-SQ%3D%3D&type=public&app_id=4d17f433";
+        const proxyurl = 'https://corsproxy.io/?';
+        let url = proxyurl + "https://api.edamam.com/api/recipes/v2?q="+ query + "&app_key=8500fd68b54d0b79b132671796c6515f&_cont=CHcVQBtNNQphDmgVQntAEX4Bakt7BQUERmNAC2QUYFV6AQQVX3cRBWcSMFZzAlUGRjFFAzZBMAElAgAAQmxJBGJCZFQgVRFqX3cWQT1OcV9xBB8VADQWVhFCPwoxXVZEITQeVDcBaR4-SQ%3D%3D&type=public&app_id=4d17f433";
         let results_list = []
         const response = await fetch(url);
         await response.json().then(data_elem => {
