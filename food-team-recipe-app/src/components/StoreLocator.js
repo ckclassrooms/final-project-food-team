@@ -6,6 +6,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import $ from 'jquery'
+import Geocode from "react-geocode";
 
 function getStoreLocation (zipCode, access_token) {
   // This API gets product details. ID is neccesary
@@ -51,6 +52,16 @@ function getStoreLocation (zipCode, access_token) {
 // }
 
 function StoreLocator() {
+  // Geocode.setLanguage("en");
+  // Geocode.fromAddress("Eiffel Tower").then(
+  //   (response) => {
+  //     const { lat, lng } = response.results[0].geometry.location;
+  //     console.log(lat, lng);
+  //   },
+  //   (error) => {
+  //     console.error(error);
+  //   }
+  // );
   let navigate = useNavigate();
   const gridRef = useRef();
   const { state } = useLocation();
@@ -88,9 +99,8 @@ function StoreLocator() {
       let tempRowData = [];
       data.forEach(async elem => {
         let tempDepartments = await getDep(elem);
-        let cnty = 'NONE';
-        if(elem.address.county !== undefined) {cnty = elem.address.county.toUpperCase();}
-        tempRowData.push({ name:elem.name.toUpperCase(), address:elem.address.addressLine1.toUpperCase(), city:elem.address.city.toUpperCase(), county:cnty.toUpperCase(), state:elem.address.state.toUpperCase(), zip:elem.address.zipCode.toUpperCase(), chain:elem.chain.toUpperCase(), dep:tempDepartments, id:elem.locationId });
+        let full_address = {name: elem.name, addr: elem.address.addressLine1 + ", " + elem.address.city + ", " + elem.address.state + " " + elem.address.zipCode} 
+        tempRowData.push({ name:elem.name.toUpperCase() + " (" + elem.locationId + ")", address:full_address, dep:tempDepartments });
       });
       console.log(tempRowData);
       setRowData(tempRowData);
@@ -106,16 +116,18 @@ function StoreLocator() {
       headerCheckboxSelection: true,
       checkboxSelection: true,
       showDisabledCheckboxes: true,
+      resizable: true,
+      width: "150" 
     },
-    { headerName: 'Store Name', field: 'name', resizable: true, autoHeight: true },
-    { field: 'chain', resizable: true, autoHeight: true },
-    { field: 'address', resizable: true, autoHeight: true },
-    { field: 'city', resizable: true, autoHeight: true },
-    { field: 'county', resizable: true, autoHeight: true },
-    { field: 'state', resizable: true, autoHeight: true },
-    { headerName: 'Zip Code', field: 'zip', resizable: true, autoHeight: true },
-    { headerName: 'Store ID', field: 'id',resizable: true, autoHeight: true },
-    { headerName: 'Departments', field: 'dep',resizable: true, autoHeight: true }
+    { headerName: 'Store Name', field: 'name', width: "400" , resizable: true, wrapText: true, autoHeight: true },
+    { headerName: 'Address', field: 'address', resizable: true, width: "350", wrapText: true, autoHeight: true,
+        cellRenderer: function(params) {
+          let url = "https://maps.google.com?q=" + params.value.name
+          console.log(url)
+          return <a href= {url} target="_blank"> {params.value.addr} </a>
+        }
+    },
+    { headerName: 'Departments', field: 'dep', width: "350", resizable: true, autoHeight: true }
   ])
 
   const onGridReady = useCallback((params) => {
