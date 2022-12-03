@@ -38,7 +38,7 @@ function Landing() {
           </div>
           <div>
             {!authorizationCode && <Stack direction="row" spacing={60}>
-              <Button onClick={ () => window.location.href = 'https://api.kroger.com/v1/connect/oauth2/authorize?scope=cart.basic:write&response_type=code&client_id=foodappforschool-043e65debc535226ffbd8fa7ed03f8041525245609739767566&redirect_uri=https://starlit-twilight-fde55f.netlify.app/'  } variant="contained" startIcon={<Help />} color="error" >
+              <Button onClick={ () => window.location.href = 'https://api.kroger.com/v1/connect/oauth2/authorize?scope=cart.basic:write&response_type=code&client_id=foodappforschool-043e65debc535226ffbd8fa7ed03f8041525245609739767566&redirect_uri=http://localhost:3000/'  } variant="contained" startIcon={<Help />} color="error" >
                 If you want to add ingredients to your Kroger cart, sign in here.
               </Button>
             </Stack>}
