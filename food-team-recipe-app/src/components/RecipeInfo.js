@@ -14,8 +14,18 @@ import {CheckCircle, ChevronLeft, Link, AddShoppingCart} from '@mui/icons-materi
 import $ from 'jquery'
 
 function handlePrev() {}
+/*
+{
+  "items": [
+     {
+       "upc": "0001200016268",
+       "quantity": 3 
+      }
+    ]
+ }: 
+*/
 
-function callAddToCartAPI (code) {
+function callAddToCartAPI (code, upcCode, quantity) {
   return new Promise((resolve, reject) => {
     //const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
     const proxyurl = 'https://corsproxy.io/?';
@@ -29,8 +39,8 @@ function callAddToCartAPI (code) {
         "Authorization": "Bearer " + code,
       },
       "processData": false,
-      "data": "{\n  \"items\": [\n     {\n       \"upc\": \"0001200016268\",\n       \"quantity\": 3 \n      }\n    ]\n }"
-    }
+      "data": "{\n  \"items\": [\n     {\n       \"upc\": \"" + upcCode + "\",\n       \"quantity\": " + quantity + " \n      }\n    ]\n }"
+}
     $.ajax(settings).done(function (response) {
       resolve(response)
     });
@@ -194,6 +204,12 @@ function RecipeInfo(props) {
     }// eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
+  async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+  }
+
   useEffect(() => {
     if(state === null || state === undefined) {  
       navigate('/'); 
@@ -201,16 +217,11 @@ function RecipeInfo(props) {
       let tempIngredients = [];
       let tempUPCs = [];
       let itemPrice = 0;
-      async function asyncForEach(array, callback) {
-        for (let index = 0; index < array.length; index++) {
-          await callback(array[index], index, array);
-        }
-      }
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken);
           itemPrice = data[0].items[0].price.regular;
-          tempUPCs.push(data[0].upc);
+          tempUPCs.push({'upc': data[0].upc, 'quantity' : elem.quantity < 1 ? 1 : elem.quantity});
           console.log('tempIngredients',tempIngredients);
           tempIngredients.push({ingredient : elem.food.toUpperCase(), price:itemPrice});
         });
@@ -218,17 +229,6 @@ function RecipeInfo(props) {
         setProductUPCCodes(tempUPCs);
       }
       start();
-      if(hasAuthCode){
-        const addToCart = async () => {
-          console.log('auth__', authCode)
-          let data = await callGetAddToCartToken(authCode);
-          console.log('data__', data)
-          let data2 = await callAddToCartAPI(data.access_token);
-          console.log('data2__', data2)
-        }
-        addToCart();
-        
-      }
     }// eslint-disable-next-line react-hooks/exhaustive-deps
   },[accessToken])
 
@@ -309,7 +309,24 @@ const onGridReady = useCallback((params) => {
             Go Back
           </Button>
           <Stack direction="column" spacing={2}>
-          {hasAuthCode && <Button onClick={ () => console.log(productUPCCodes)/* to do call Kroger Api with product UPC's */ } variant="contained" startIcon={<AddShoppingCart />} color="success" >
+          {hasAuthCode && <Button onClick={
+             () => {
+                const addToCart = async () => {
+                console.log('auth__', authCode);
+                console.log('upc array', productUPCCodes);
+                let data = await callGetAddToCartToken(authCode);
+                console.log('data__', data)
+                await asyncForEach(productUPCCodes, async (elem) => {
+                  console.log('elem', elem)
+                  let upcCode = elem.upc;
+                  let quantity = elem.quantity;
+                  let data2 = await callAddToCartAPI(data.access_token, upcCode, quantity);
+                  console.log('data2__', data2)
+                });                
+              }
+              addToCart();
+             } /* to do call Kroger Api with product UPC's */ 
+            } variant="contained" startIcon={<AddShoppingCart />} color="success" >
             Add ingredients to Kroger cart
           </Button>}
           <Button onClick={ () => navigate("/StoreLocator", {replace:true, state : {ingredients:ingredients, access_Token : accessToken} } ) } variant="contained" startIcon={<CheckCircle />} color="success" >
