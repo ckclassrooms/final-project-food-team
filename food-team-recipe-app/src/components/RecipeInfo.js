@@ -54,10 +54,11 @@ function callGetAddToCartToken (code) {
         "grant_type": "authorization_code",
         "scope": "cart.basic:write",
         'code': code,
-        'redirect_uri':'http://localhost:3000/'
+        'redirect_uri':'https://starlit-twilight-fde55f.netlify.app/'
       }
     }
     $.ajax(settings).done(function (response) {
+      // /* https://starlit-twilight-fde55f.netlify.app/ */ http://localhost:3000/
       resolve(response)
     });
   });
