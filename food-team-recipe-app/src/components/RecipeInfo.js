@@ -15,6 +15,54 @@ import $ from 'jquery'
 
 function handlePrev() {}
 
+function callAddToCartAPI (code) {
+  return new Promise((resolve, reject) => {
+    //const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
+    const proxyurl = 'https://corsproxy.io/?';
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "https://api.kroger.com/v1/cart/add",
+      "method": "PUT",
+      "headers": {
+        "Accept": "application/json",
+        "Authorization": "Bearer " + code,
+      },
+      "processData": false,
+      "data": "{\n  \"items\": [\n     {\n       \"upc\": \"0001200016268\",\n       \"quantity\": 3 \n      }\n    ]\n }"
+    }
+    $.ajax(settings).done(function (response) {
+      resolve(response)
+    });
+  });
+}
+
+function callGetAddToCartToken (code) {
+  return new Promise((resolve, reject) => {
+    //const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
+    const proxyurl = 'https://corsproxy.io/?';
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url":proxyurl + "https://api.kroger.com/v1/connect/oauth2/token",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "Basic Zm9vZGFwcGZvcnNjaG9vbC0wNDNlNjVkZWJjNTM1MjI2ZmZiZDhmYTdlZDAzZjgwNDE1MjUyNDU2MDk3Mzk3Njc1NjY6UXVEQ2JoMEFVSTViUy05SXJ1eWtYV01kQUN0clVZanN1TVRuRmVyLQ=="
+      },
+      "data": {
+        "grant_type": "authorization_code",
+        "scope": "cart.basic:write",
+        'code': code,
+        'redirect_uri':'http://localhost:3000/'
+      }
+    }
+    $.ajax(settings).done(function (response) {
+      resolve(response)
+    });
+  });
+}
+
 // note proxy URL is probably need when working on developing
 function callProductAPI (ingredient, access_token) {
   return new Promise((resolve, reject) => {
@@ -169,6 +217,17 @@ function RecipeInfo(props) {
         setProductUPCCodes(tempUPCs);
       }
       start();
+      if(hasAuthCode){
+        const addToCart = async () => {
+          console.log('auth__', authCode)
+          let data = await callGetAddToCartToken(authCode);
+          console.log('data__', data)
+          let data2 = await callAddToCartAPI(data.access_token);
+          console.log('data2__', data2)
+        }
+        addToCart();
+        
+      }
     }// eslint-disable-next-line react-hooks/exhaustive-deps
   },[accessToken])
 
