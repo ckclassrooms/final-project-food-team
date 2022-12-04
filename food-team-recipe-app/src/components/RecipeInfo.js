@@ -118,6 +118,7 @@ function RecipeInfo(props) {
     if(state === null || state === undefined) {  
       navigate('/'); 
     } else {
+      console.log(productSearchToken, location);
       setAccessToken(productSearchToken);
             
       const tempIngredientList = [];
@@ -172,17 +173,10 @@ function RecipeInfo(props) {
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken, location);
-
-          if(data[0].items[0].hasOwnProperty('price')){
-            itemPrice = data[0].items[0].price.regular;
-            if(itemImage = data[0].images[0].sizes.length <= 4) {itemImage = data[0].images[0].sizes[0].url;}
-            else{itemImage = data[0].images[0].sizes[4].url;}
-          }
-          
-          let itemQuantity=1;
-          if(elem.quantity < 1){itemQuantity=1;}
-          if(elem.quantity > 5){itemQuantity=5;}
-          tempUPCs.push({'upc': data[0].upc, 'quantity' : itemQuantity });
+          console.log(data);
+          itemPrice = data[0].items[0].price.regular;
+          itemImage = data[0].images[0].sizes[4].url;
+          tempUPCs.push({'upc': data[0].upc, 'quantity' : elem.quantity < 1 ? 1 : elem.quantity});
           tempIngredients.push({img: itemImage, ingredient : elem.food.toUpperCase(), desc: data[0].description, price:"$" + itemPrice
           , quant: data[0].items[0].size});
         });
@@ -196,7 +190,7 @@ function RecipeInfo(props) {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
@@ -236,32 +230,42 @@ const onGridReady = useCallback((params) => {
 
   return (
     <>
-      <div>
-        <>
-          <h1>{recipeName}</h1>
-          <IconButton size="small" color="primary" aria-label="link to website" component="label">
-            <a target="_blank" rel="noreferrer" href={url}>Link to Recipe</a>
-            <Link size="large" />
-          </IconButton>
-        </>
+      <h1 style={{ display: "flex",
+              alignItems: "center",
+              justifyContent: "center"}}>{recipeName}</h1>
+      <div style={{'alignItems': 'center'}}>
+          <Stack spacing={0.5} direction="row" >
+            <div style={{'padding-left': '40px'}}>
+              <>
+                <IconButton size="small" color="primary" aria-label="link to website" component="label">
+                  <a target="_blank" rel="noreferrer" href={url}>Link to Recipe</a>
+                  <Link size="large" />
+                </IconButton>
+              </>
+              <br/>
+              <img src={img} width="800" height="550" alt={recipeName} aria-label={recipeName}></img>
+              <br/>
+            </div>
+          <br/>
+          <div className='recipePrep' style={{'padding-left': '40px'}}>
+          <br/>
+          <h2 style={{ display: "flex",
+              alignItems: "center",
+              justifyContent: "center"}}>{state.ingredients.length} ingredients: </h2>
+          <Box sx={{ width: '100%' }}>
+            <Stack spacing={0.5} >
+              {state === null? null : state.ingredients.map(elem => {
+                return <Item className='ingredientList' key={elem.food}>{elem.text.toUpperCase()}</Item>
+              })}
+            </Stack>
+          </Box>
+        </div>
         <br/>
-        <img src={img} width="auto" height="500" alt={recipeName} aria-label={recipeName}></img>
-        <br/>
-      </div>
-      <br/>
-      <div className='recipePrep'>
-        <h2>{state.ingredients.length} ingredients: </h2>
-        <Box sx={{ width: '50%' }}>
-          <Stack spacing={0.5}>
-            {state === null? null : state.ingredients.map(elem => {
-              return <Item className='ingredientList' key={elem.food}>{elem.text.toUpperCase()}</Item>
-            })}
           </Stack>
-    </Box>
-      </div>
-      <br/>
-      
-      <div className="ag-theme-alpine" style={{height: '70vh', width: '90vw'}}>
+       </div>
+       <br/>
+       <br/>
+      <div className="ag-theme-alpine" style={{height: '70vh', width: '90vw', 'padding-left': '75px'}}>
         <AgGridReact
           // defaultColDef={{
           //   cellStyle: () => ({
@@ -296,8 +300,12 @@ const onGridReady = useCallback((params) => {
           {hasAuthCode && <Button onClick={
              () => {
                 const addToCart = async () => {
+                console.log('auth__', authCode);
+                console.log('upc array', productUPCCodes);
                 let data = await callGetAddToCartToken(authCode);
+                console.log('data__', data)
                 await asyncForEach(productUPCCodes, async (elem) => {
+                  console.log('elem', elem)
                   let upcCode = elem.upc;
                   let quantity = elem.quantity;
                   let data2 = await callAddToCartAPI(data.access_token, upcCode, quantity);

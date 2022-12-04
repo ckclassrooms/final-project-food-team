@@ -83,7 +83,13 @@ function Landing() {
       sessionStorage.setItem('krog_auth', authCode1);
     } else if(authCode2 !== null) {
       setCartAuthorizationCode(authCode2);
-    }// eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+    if (sessionStorage.getItem('zip_code') !== null) {
+      setLocationID(sessionStorage.getItem('zip_code'));
+    }
+
+    // console.log(authCode);
+    // console.log(typeof (authCode));// eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   ///////////////////// Store locator functions ////////////////////////////
@@ -108,6 +114,7 @@ function Landing() {
         tempRowData.push({ name:elem.name.toUpperCase() + " (" + elem.locationId + ")", address:full_address, dep:tempDepartments, id:elem.locationId });
       });
       setRowData(tempRowData);
+      sessionStorage.setItem('zip_code', zipCode);
       setShowStores(true);
     }
     fnAsync();
@@ -147,13 +154,16 @@ function Landing() {
   
     return (
         <>
-          <p> Welcome to the recipes app. </p>
-          <a className="App-link" href="https://github.com/ckclassrooms/final-project-proposal-food-team" target="_blank" rel="noopener noreferrer"> Repository </a>
+          <div style={{textAlign: 'center', backgroundColor: 'blue', height: 'auto'}}>      
+            <p> <h1 style= {{'color': '#f2db3f', 'font-family': 'futura', 'font-weight': 'bold'}}> Welcome to the Recipes App </h1></p>
+            <a className="App-link" href="https://github.com/ckclassrooms/final-project-proposal-food-team" style= {{'color': 'red', 'font-weight': 'bold'}} target="_blank" rel="noopener noreferrer"> Repository</a>
+          </div>    
           { productInformationToken &&
           <>
             <>
               { !locationID && !showStores &&
-                <div>
+                <div style={{textAlign: 'center'}}>  
+                  <br></br>
                   <form onSubmit={handleSubmit}>
                     <label>First, please enter your zipcode to find a kroger store:
                       <input 
@@ -181,28 +191,26 @@ function Landing() {
                   </AgGridReact>
                 </div>
               }
-              <br></br>
-              <div>
-              </div>
-              <br></br>
             </>
           </>
           }
           { locationID &&
           <>
-            <br/> <br/> <SearchBar authCode={cartAuthorizationCode} productAuthCode={productInformationToken} location={locationID} /> <br/> 
-            <div id="loadedlist">
+            <div style={{textAlign: 'center', backgroundColor: 'blue', height: 'auto'}}>      
+            <br/> <SearchBar authCode={cartAuthorizationCode} productAuthCode={productInformationToken} location={locationID} /> <br/> 
+            </div>
+            <div id="loadedlist" style={{backgroundColor: 'yellow', height: '100%'}}>
               <h2> You can now search for recipes, here are some recipes to try </h2>
                 <ul>
-                  <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[0].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Classic Taco Salad</Link> </li>
-                  <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[1].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Vegetarian Taco Chili</Link> </li>
-                  <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[2].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Taco Stuffed Burger</Link> </li>
-                  <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[3].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Turkey chilli & rice tacos</Link> </li>
-                  <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[9].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Beef Taco Roll-Ups</Link> </li>
-                  <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[5].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Taco Chili Soup</Link> </li>
+                  <li> <Link to="/RecipeInfo" state = {{recipe:initialData[0].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Classic Taco Salad</Link> </li>
+                  <li> <Link to="/RecipeInfo" state = {{recipe:initialData[1].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Vegetarian Taco Chili</Link> </li>
+                  <li> <Link to="/RecipeInfo" state = {{recipe:initialData[2].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Taco Stuffed Burger</Link> </li>
+                  <li> <Link to="/RecipeInfo" state = {{recipe:initialData[3].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Turkey chilli & rice tacos</Link> </li>
+                  <li> <Link to="/RecipeInfo" state = {{recipe:initialData[9].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Beef Taco Roll-Ups</Link> </li>
+                  <li> <Link to="/RecipeInfo" state = {{recipe:initialData[5].recipe, auth:cartAuthorizationCode, prodSearchAuth:productInformationToken,location:locationID}}>Taco Chili Soup</Link> </li>
                 </ul>            
             </div>
-            <div>
+            <div id="loadedlist" style={{backgroundColor: 'yellow', height: '44vh'}}>
               {!cartAuthorizationCode && <Stack direction="row" spacing={60}>
                 <Button onClick={ () => /* https://starlit-twilight-fde55f.netlify.app/ http://localhost:3000/ */ window.location.href = 'https://api.kroger.com/v1/connect/oauth2/authorize?scope=cart.basic:write&response_type=code&client_id=foodappforschool-043e65debc535226ffbd8fa7ed03f8041525245609739767566&redirect_uri=https://starlit-twilight-fde55f.netlify.app/'  } variant="contained" startIcon={<Help />} color="error" >
                   If you want to add ingredients to your Kroger cart, sign in here.

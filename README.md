@@ -16,3 +16,5 @@ The security concerns that would be expected in this application would be SQL in
 
 
 Link to deployed app: https://starlit-twilight-fde55f.netlify.app/
+
+Please refer to final_checkpoint.md for a overview.
