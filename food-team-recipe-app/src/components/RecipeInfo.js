@@ -32,7 +32,7 @@ function callAddToCartAPI (code, upcCode, quantity) {
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url": "https://api.kroger.com/v1/cart/add",
+      "url": proxyurl + "https://api.kroger.com/v1/cart/add",
       "method": "PUT",
       "headers": {
         "Accept": "application/json",
@@ -224,7 +224,7 @@ function RecipeInfo(props) {
           console.log(data);
           itemPrice = data[0].items[0].price.regular;
           itemImage = data[0].images[0].sizes[4].url;
-          tempUPCs.push({'upc': data[0].upc, 'quantity' : elem.quantity < 1 ? 1 : elem.quantity});
+          tempUPCs.push({'upc': data[0].upc, 'quantity' : 1});
           tempIngredients.push({img: itemImage, ingredient : elem.food.toUpperCase(), desc: data[0].description, price:"$" + itemPrice
           , quant: data[0].items[0].size});
         });
@@ -238,8 +238,8 @@ function RecipeInfo(props) {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
+    padding: theme.spacing(2),
+    textAlign: 'left',
     color: theme.palette.text.secondary,
   }));
 
@@ -249,7 +249,7 @@ const [columnDefs] = useState([
     headerCheckboxSelection: true,
     checkboxSelection: true,
     showDisabledCheckboxes: true,
-    width: "150"
+    width: "200"
   },
   {
     headerName: "",
@@ -278,7 +278,7 @@ const onGridReady = useCallback((params) => {
 
   return (
     <>
-      <div>
+      <div style={{'padding-left': '40px'}}>
         <>
           <h1>{recipeName}</h1>
           <IconButton size="small" color="primary" aria-label="link to website" component="label">
@@ -287,19 +287,19 @@ const onGridReady = useCallback((params) => {
           </IconButton>
         </>
         <br/>
-        <img src={img} width="auto" height="500" alt={recipeName} aria-label={recipeName}></img>
+        <img src={img} width="auto" height="auto" alt={recipeName} aria-label={recipeName}></img>
         <br/>
       </div>
       <br/>
-      <div className='recipePrep'>
-        <h2>{state.ingredients.length} ingredients: </h2>
-        <Box sx={{ width: '50%' }}>
+      <div className='recipePrep' style={{'padding-left': '40px'}}>
+        <h2>{state.ingredients.length} Ingredients: </h2>
+        <Box sx={{ width: '100%', display: 'flex'}}>
           <Stack spacing={0.5}>
             {state === null? null : state.ingredients.map(elem => {
               return <Item className='ingredientList' key={elem.food}>{elem.text.toUpperCase()}</Item>
             })}
           </Stack>
-    </Box>
+        </Box>
       </div>
       <br/>
       
@@ -313,7 +313,7 @@ const onGridReady = useCallback((params) => {
           //   })
           // }}
           ref={gridRef}
-          style={{ width: '100%', height: '100%' }}
+          style={{ display: 'flex', width: '100%', height: '100%'}}
           rowSelection={'multiple'}
           animateRows={true}
           rowMultiSelectWithClick={true}
@@ -329,7 +329,7 @@ const onGridReady = useCallback((params) => {
         
       </div>
       <br></br>
-      <div>
+      <div style={{'padding-left': '40px'}}>
         <Stack direction="row" spacing={60}>
           <Button onClick={() => navigate(-1)} variant="contained" startIcon={<ChevronLeft />} color="error" >
             Go Back

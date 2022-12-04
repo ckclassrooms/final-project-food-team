@@ -29,10 +29,12 @@ function Landing() {
   
     return (
         <>
-          <p> Welcome to the recipes app. </p>
-          <a className="App-link" href="https://github.com/ckclassrooms/final-project-proposal-food-team" target="_blank" rel="noopener noreferrer"> Repository </a>
-          <br/> <br/> <SearchBar authCode={authorizationCode} /> <br/> 
-          <div id="loadedlist">
+          <div style={{textAlign: 'center', backgroundColor: 'blue', height: 'auto'}}>      
+              <p> <h1 style= {{'color': '#f2db3f', 'font-family': 'futura', 'font-weight': 'bold'}}> Welcome to the Recipes App </h1></p>
+              <a className="App-link" href="https://github.com/ckclassrooms/final-project-proposal-food-team" style= {{'color': 'red', 'font-weight': 'bold'}} target="_blank" rel="noopener noreferrer"> Repository</a>
+              <br/> <br/> <SearchBar authCode={authorizationCode} /> <br/> 
+          </div>
+          <div id="loadedlist" style={{backgroundColor: 'yellow', height: '100vh'}}>
             <h2> Some recipes to try </h2>
               <ul>
                 <li> <Link to="/RecipeInfo" state = {{recipe:initialData[0].recipe, auth:authorizationCode}}>Classic Taco Salad</Link> </li>
@@ -41,19 +43,20 @@ function Landing() {
                 <li> <Link to="/RecipeInfo" state = {{recipe:initialData[3].recipe, auth:authorizationCode}}>Turkey chilli & rice tacos</Link> </li>
                 <li> <Link to="/RecipeInfo" state = {{recipe:initialData[9].recipe, auth:authorizationCode}}>Beef Taco Roll-Ups</Link> </li>
                 <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[5].recipe, auth:authorizationCode}}>Taco Chili Soup</Link> </li>
-              </ul>            
-          </div>
-          <div>
-            {!authorizationCode && <Stack direction="row" spacing={60}>
-              <Button onClick={ () => /* https://starlit-twilight-fde55f.netlify.app/ http://localhost:3000/ */ window.location.href = 'https://api.kroger.com/v1/connect/oauth2/authorize?scope=cart.basic:write&response_type=code&client_id=foodappforschool-043e65debc535226ffbd8fa7ed03f8041525245609739767566&redirect_uri=https://starlit-twilight-fde55f.netlify.app/'  } variant="contained" startIcon={<Help />} color="error" >
-                If you want to add ingredients to your Kroger cart, sign in here.
-              </Button>
-            </Stack>}
-            {authorizationCode && <Stack direction="row" spacing={60}>
-              <Button onClick={ () => null  } variant="contained" startIcon={<CheckCircle />} color="success" >
-                You can now add ingredients to your Kroger cart!
-              </Button>
-            </Stack>}
+              </ul>  
+              {!authorizationCode && <Stack direction="row" spacing={60}>
+                <Button onClick={ () => /* https://starlit-twilight-fde55f.netlify.app/ http://localhost:3000/ */ window.location.href = 'https://api.kroger.com/v1/connect/oauth2/authorize?scope=cart.basic:write&response_type=code&client_id=foodappforschool-043e65debc535226ffbd8fa7ed03f8041525245609739767566&redirect_uri=https://starlit-twilight-fde55f.netlify.app/'  } variant="contained" startIcon={<Help />} color="error" >
+                  If you want to add ingredients to your Kroger cart, sign in here.
+                </Button>
+              </Stack>}
+              {authorizationCode && <Stack direction="column" spacing={2}>
+                <Button onClick={ () => null  } variant="contained" startIcon={<CheckCircle />} color="success" >
+                  You can now add ingredients to your Kroger cart!
+                </Button>
+                <Button onClick={ () => {sessionStorage.setItem('krog_auth', null); setAuthorizationCode(null)} } variant="contained" startIcon={<Help />} color="error" >
+                  Log Out
+                </Button>
+              </Stack>}          
           </div>
         </>
     )
