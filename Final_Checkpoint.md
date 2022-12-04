@@ -4,7 +4,7 @@ In checkpoint 0, we had planned that this application will "allow users to get f
 And optionally give users information about nutrition about the recipe from these sources/ APIs’: FoodData Central (usda.gov) Nutrition API by Nutritionix"
 
 As our Final Checkpoint, we have come very close to implementating most of the features that we sought to, even though haven't been able to provide the 'extra' functionality like recommendations due to time constraints.
-Our app can be used to search for recipes (resulting list will be displayed), view an individual recipes's ingredients, search for and select a store via the Kroger Api using the zip code, and add some or all of those ingredients to the Kroger cart using the Kroger cart api.
+Our app (deployed on Netlify, built using React, Recipe Api, Kroger Api, Kroger Cart Api) can be used to search for recipes (resulting list will be displayed), view an individual recipes's ingredients, search for and select a store via the Kroger Api using the zip code, and add some or all of those ingredients to the Kroger cart using the Kroger cart api.
 
 How to Navigate through the website-
 1) This is the landing page of our app, first the user must search for a Kroger store using your zipcode.
