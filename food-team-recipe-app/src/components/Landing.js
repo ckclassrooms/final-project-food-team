@@ -78,12 +78,19 @@ function Landing() {
     fnAsync();
     const queryParams = new URLSearchParams(window.location.search);
     console.log('URL:', queryParams);
-    const authCode = queryParams.get('code');
-    if(authCode !== null) {
-      setCartAuthorizationCode(authCode);
+    const authCode1 = queryParams.get('code');
+    const authCode2 = sessionStorage.getItem('krog_auth');
+    console.log("authCode1 " + authCode1)
+    console.log("authCode2 "+authCode2)
+    if(authCode1 !== null) {
+      setAuthorizationCode(authCode1);
+      sessionStorage.setItem('krog_auth', authCode1);
+    } else if(authCode2 !== null) {
+      setAuthorizationCode(authCode2);
     }
-    console.log(authCode);
-    console.log(typeof (authCode));// eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // console.log(authCode);
+    // console.log(typeof (authCode));// eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   ///////////////////// Store locator functions ////////////////////////////
