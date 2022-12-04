@@ -67,6 +67,9 @@ function callGetAddToCartToken (code) {
         'redirect_uri':'https://starlit-twilight-fde55f.netlify.app/'
       }
     }
+    $.ajax(settings).fail(function (response) {
+      reject(alert('Add to cart failed, please reload the application from the start to get new tokens.'));
+    });
     $.ajax(settings).done(function (response) {
       // /* https://starlit-twilight-fde55f.netlify.app/ */ http://localhost:3000/
       resolve(response)
@@ -118,7 +121,6 @@ function RecipeInfo(props) {
     if(state === null || state === undefined) {  
       navigate('/'); 
     } else {
-      console.log(productSearchToken, location);
       setAccessToken(productSearchToken);
             
       const tempIngredientList = [];
@@ -173,7 +175,6 @@ function RecipeInfo(props) {
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken, location);
-          console.log(data);
           if(data[0].items[0].hasOwnProperty('price')) {
             itemPrice = data[0].items[0].price.regular;
           }
@@ -308,12 +309,8 @@ const onGridReady = useCallback((params) => {
           {hasAuthCode && <Button onClick={
              () => {
                 const addToCart = async () => {
-                console.log('auth__', authCode);
-                console.log('upc array', productUPCCodes);
                 let data = await callGetAddToCartToken(authCode);
-                console.log('data__', data)
                 await asyncForEach(productUPCCodes, async (elem) => {
-                  console.log('elem', elem)
                   let upcCode = elem.upc;
                   let quantity = elem.quantity;
                   let data2 = await callAddToCartAPI(data.access_token, upcCode, quantity);
