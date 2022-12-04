@@ -83,10 +83,10 @@ function Landing() {
     console.log("authCode1 " + authCode1)
     console.log("authCode2 "+authCode2)
     if(authCode1 !== null) {
-      setAuthorizationCode(authCode1);
+      setCartAuthorizationCode(authCode1);
       sessionStorage.setItem('krog_auth', authCode1);
     } else if(authCode2 !== null) {
-      setAuthorizationCode(authCode2);
+      setCartAuthorizationCode(authCode2);
     }
 
     // console.log(authCode);
