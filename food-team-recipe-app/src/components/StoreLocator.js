@@ -177,7 +177,7 @@ function StoreLocator() {
       <br></br>
       <div>
         <Stack direction="row" spacing={60}>
-          <Button onClick={() => navigate('/')} variant="contained" startIcon={<ChevronLeft />} color="error" >
+          <Button onClick={() => navigate(-1)} variant="contained" startIcon={<ChevronLeft />} color="error" >
             Go Back
           </Button>
           <Button disabled={!isSelected}

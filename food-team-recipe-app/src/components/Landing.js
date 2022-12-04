@@ -12,12 +12,19 @@ function Landing() {
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     console.log('URL:', queryParams);
-    const authCode = queryParams.get('code');
-    if(authCode !== null) {
-      setAuthorizationCode(authCode);
+    const authCode1 = queryParams.get('code');
+    const authCode2 = sessionStorage.getItem('krog_auth');
+    console.log("authCode1 " + authCode1)
+    console.log("authCode2 "+authCode2)
+    if(authCode1 !== null) {
+      setAuthorizationCode(authCode1);
+      sessionStorage.setItem('krog_auth', authCode1);
+    } else if(authCode2 !== null) {
+      setAuthorizationCode(authCode2);
     }
-    console.log(authCode);
-    console.log(typeof (authCode));// eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // console.log(authCode);
+    // console.log(typeof (authCode));// eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   
     return (
@@ -28,11 +35,11 @@ function Landing() {
           <div id="loadedlist">
             <h2> Some recipes to try </h2>
               <ul>
-                <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[0].recipe, auth:authorizationCode}}>Classic Taco Salad</Link> </li>
-                <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[1].recipe, auth:authorizationCode}}>Vegetarian Taco Chili</Link> </li>
-                <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[2].recipe, auth:authorizationCode}}>Taco Stuffed Burger</Link> </li>
-                <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[3].recipe, auth:authorizationCode}}>Turkey chilli & rice tacos</Link> </li>
-                <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[9].recipe, auth:authorizationCode}}>Beef Taco Roll-Ups</Link> </li>
+                <li> <Link to="/RecipeInfo" state = {{recipe:initialData[0].recipe, auth:authorizationCode}}>Classic Taco Salad</Link> </li>
+                <li> <Link to="/RecipeInfo" state = {{recipe:initialData[1].recipe, auth:authorizationCode}}>Vegetarian Taco Chili</Link> </li>
+                <li> <Link to="/RecipeInfo" state = {{recipe:initialData[2].recipe, auth:authorizationCode}}>Taco Stuffed Burger</Link> </li>
+                <li> <Link to="/RecipeInfo" state = {{recipe:initialData[3].recipe, auth:authorizationCode}}>Turkey chilli & rice tacos</Link> </li>
+                <li> <Link to="/RecipeInfo" state = {{recipe:initialData[9].recipe, auth:authorizationCode}}>Beef Taco Roll-Ups</Link> </li>
                 <li> <Link to="/RecipeInfo" replace={true} state = {{recipe:initialData[5].recipe, auth:authorizationCode}}>Taco Chili Soup</Link> </li>
               </ul>            
           </div>

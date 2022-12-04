@@ -217,13 +217,16 @@ function RecipeInfo(props) {
       let tempIngredients = [];
       let tempUPCs = [];
       let itemPrice = 0;
+      let itemImage = "";
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken);
+          console.log(data);
           itemPrice = data[0].items[0].price.regular;
+          itemImage = data[0].images[0].sizes[4].url;
           tempUPCs.push({'upc': data[0].upc, 'quantity' : elem.quantity < 1 ? 1 : elem.quantity});
-          console.log('tempIngredients',tempIngredients);
-          tempIngredients.push({ingredient : elem.food.toUpperCase(), price:itemPrice});
+          tempIngredients.push({img: itemImage, ingredient : elem.food.toUpperCase(), desc: data[0].description, price:"$" + itemPrice
+          , quant: data[0].items[0].size});
         });
         setIngredients(tempIngredients);
         setProductUPCCodes(tempUPCs);
@@ -246,9 +249,25 @@ const [columnDefs] = useState([
     headerCheckboxSelection: true,
     checkboxSelection: true,
     showDisabledCheckboxes: true,
+    width: "150"
   },
-  { field: 'ingredient' },
-  { headerName: 'Price($)', field: 'price' }
+  {
+    headerName: "",
+    field: 'img',
+    autoHeight: true,
+    cellRenderer: function(params) {
+      return <img src={params.value} width="auto" height="100"></img>;
+    }
+  },
+  { field: 'ingredient', width: "300" },
+  {
+    headerName: 'Description',
+    field: 'desc',
+    wrapText: true,
+    width: "500"
+  },
+  { headerName: 'Price($)', field: 'price', width: "100"},
+  { headerName: 'Quantity', field: 'quant', width: "150"}
 ])
 
 const onGridReady = useCallback((params) => {
@@ -262,7 +281,7 @@ const onGridReady = useCallback((params) => {
       <div>
         <>
           <h1>{recipeName}</h1>
-          <IconButton size="small" onClick={event =>  window.open(url,'_blank')} color="primary" aria-label="link to website" component="label">
+          <IconButton size="small" color="primary" aria-label="link to website" component="label">
             <a target="_blank" rel="noreferrer" href={url}>Link to Recipe</a>
             <Link size="large" />
           </IconButton>
@@ -286,6 +305,13 @@ const onGridReady = useCallback((params) => {
       
       <div className="ag-theme-alpine" style={{height: '70vh', width: '90vw'}}>
         <AgGridReact
+          // defaultColDef={{
+          //   cellStyle: () => ({
+          //     display: "flex",
+          //     alignItems: "center",
+          //     justifyContent: "center"
+          //   })
+          // }}
           ref={gridRef}
           style={{ width: '100%', height: '100%' }}
           rowSelection={'multiple'}
@@ -305,7 +331,7 @@ const onGridReady = useCallback((params) => {
       <br></br>
       <div>
         <Stack direction="row" spacing={60}>
-          <Button onClick={() => navigate('/')} variant="contained" startIcon={<ChevronLeft />} color="error" >
+          <Button onClick={() => navigate(-1)} variant="contained" startIcon={<ChevronLeft />} color="error" >
             Go Back
           </Button>
           <Stack direction="column" spacing={2}>
@@ -329,7 +355,7 @@ const onGridReady = useCallback((params) => {
             } variant="contained" startIcon={<AddShoppingCart />} color="success" >
             Add ingredients to Kroger cart
           </Button>}
-          <Button onClick={ () => navigate("/StoreLocator", {replace:true, state : {ingredients:ingredients, access_Token : accessToken} } ) } variant="contained" startIcon={<CheckCircle />} color="success" >
+          <Button onClick={ () => navigate("/StoreLocator", {state : {ingredients:ingredients, access_Token : accessToken} } ) } variant="contained" startIcon={<CheckCircle />} color="success" >
             Get store information
           </Button>
           </Stack>
