@@ -296,7 +296,8 @@ const onGridReady = useCallback((params) => {
                   let upcCode = elem.upc;
                   let quantity = elem.quantity;
                   let data2 = await callAddToCartAPI(data.access_token, upcCode, quantity);
-                });                
+                });
+                alert("Items added to cart");
               }
               addToCart();
              }
