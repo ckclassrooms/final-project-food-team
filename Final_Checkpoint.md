@@ -34,11 +34,11 @@ How to Navigate through the website-
 4.1) This is the page that comes up when a recipe is clicked on. It has the link to the recipe instructions
 <img width="1436" alt="Screen Shot 2022-12-03 at 7 14 04 PM" src="https://user-images.githubusercontent.com/97759670/205469259-02484bb4-447e-4e38-b359-3d6c3dee6229.png">
 
-4.2) In the same page, the ingredients are also listed
+4.2) In the same page, the ingredients are also listed. 
 <img width="748" alt="Screen Shot 2022-12-03 at 7 20 17 PM" src="https://user-images.githubusercontent.com/97759670/205469446-eea21452-17ef-4afe-b61e-c16502357c64.png">
 
 4.3) Also, the option to select and buy the ingredients is given and the prices from the store that they previously selected are displayed.
-If the user is authenticated, he/she will have the option to add items to cart
+If the user is authenticated, he/she will have the option to add items to cart. Just a disclaimer, if the items' information does not load, it may be the store selected does not have the ingredient, so you might have to try with another store.
 
 <img width="1435" alt="Screen Shot 2022-12-03 at 7 15 46 PM" src="https://user-images.githubusercontent.com/97759670/205469320-da9d2335-286c-4be9-9584-69eeda7830ae.png">
 
