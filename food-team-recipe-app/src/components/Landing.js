@@ -71,7 +71,6 @@ function Landing() {
   async function fnAsync() {
     let token = await getKrogerAuth();
     setProductInformationToken( token.access_token ); // set API auth token. Lasts for 30 min
-    console.log('before',token.access_token);
   }
 
   useEffect(() => {
@@ -111,14 +110,12 @@ function Landing() {
     event.preventDefault();
     async function fnAsync() {
       let data = await getStoreLocation(zipCode, productInformationToken);
-      console.log(data);
       let tempRowData = [];
       data.forEach(async elem => {
         let tempDepartments = await getDep(elem);
         let full_address = {name: elem.name, addr: elem.address.addressLine1 + ", " + elem.address.city + ", " + elem.address.state + " " + elem.address.zipCode} 
         tempRowData.push({ name:elem.name.toUpperCase() + " (" + elem.locationId + ")", address:full_address, dep:tempDepartments, id:elem.locationId });
       });
-      console.log(tempRowData);
       setRowData(tempRowData);
       sessionStorage.setItem('zip_code', zipCode);
       setShowStores(true);
@@ -155,7 +152,6 @@ function Landing() {
 
   const onSelectionChanged = () => {
     const selectedData = gridRef.current.api.getSelectedRows();
-    console.log('Selection Changed', selectedData, selectedData[0].id);
     if(selectedData.length > 0) {setLocationID(selectedData[0].id); setShowStores(false);}
   };
   /////////////////////////////////// end store locator functions /////////////////

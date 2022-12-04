@@ -167,13 +167,18 @@ function RecipeInfo(props) {
     } else {
       let tempIngredients = [];
       let tempUPCs = [];
-      let itemPrice = 0;
-      let itemImage = "";
+      let itemPrice = 'Out of Stock';
+      let itemImage = noimg;
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken, location);
-          itemPrice = data[0].items[0].price.regular;
-          itemImage = data[0].images[0].sizes[4].url;
+
+          if(data[0].items[0].hasOwnProperty('price')){
+            itemPrice = data[0].items[0].price.regular;
+            if(itemImage = data[0].images[0].sizes.length <= 4) {itemImage = data[0].images[0].sizes[0].url;}
+            else{itemImage = data[0].images[0].sizes[4].url;}
+          }
+          
           let itemQuantity=1;
           if(elem.quantity < 1){itemQuantity=1;}
           if(elem.quantity > 5){itemQuantity=5;}
@@ -306,7 +311,8 @@ const onGridReady = useCallback((params) => {
                   let upcCode = elem.upc;
                   let quantity = elem.quantity;
                   let data2 = await callAddToCartAPI(data.access_token, upcCode, quantity);
-                });                
+                });
+                alert("Items added to cart");
               }
               addToCart();
              }
