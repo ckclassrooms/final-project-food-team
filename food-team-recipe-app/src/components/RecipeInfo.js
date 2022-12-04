@@ -174,9 +174,17 @@ function RecipeInfo(props) {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken, location);
           console.log(data);
-          itemPrice = data[0].items[0].price.regular;
-          itemImage = data[0].images[0].sizes[4].url;
-          tempUPCs.push({'upc': data[0].upc, 'quantity' : elem.quantity < 1 ? 1 : elem.quantity});
+          if(data[0].items[0].hasOwnProperty('price')) {
+            itemPrice = data[0].items[0].price.regular;
+          }
+          if(data[0].images[0].sizes.length >= 5) {
+            itemImage = data[0].images[0].sizes[4].url;
+          }
+          itemImage = data[0].images[0].sizes[0].url;
+          let itemQuantity=1;
+          if(elem.quantity < 1){itemQuantity=1;}
+          if(elem.quantity > 5){itemQuantity=5;}
+          tempUPCs.push({'upc': data[0].upc, 'quantity' : itemQuantity });
           tempIngredients.push({img: itemImage, ingredient : elem.food.toUpperCase(), desc: data[0].description, price:"$" + itemPrice
           , quant: data[0].items[0].size});
         });
@@ -196,30 +204,30 @@ function RecipeInfo(props) {
   }));
 
 const [columnDefs] = useState([
+  // {
+  //   field: '',
+  //   // headerCheckboxSelection: true,
+  //   // checkboxSelection: true,
+  //   showDisabledCheckboxes: true,
+  //   width: 50
+  // },
   {
-    field: 'Add to order',
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    showDisabledCheckboxes: true,
-    width: "250"
-  },
-  {
-    headerName: "",
+    headerName: "Image",
     field: 'img',
     autoHeight: true,
     cellRenderer: function(params) {
       return <img src={params.value} width="auto" height="100"></img>;
     }
   },
-  { field: 'ingredient', width: "250" },
+  { field: 'ingredient', width: 200 },
   {
     headerName: 'Description',
     field: 'desc',
     wrapText: true,
-    width: "350"
+    width: 500
   },
-  { headerName: 'Price($) at your location', field: 'price', width: "250"},
-  { headerName: 'Quantity', field: 'quant', width: "150"}
+  { headerName: 'Price($) at your location', field: 'price', width: 250},
+  { headerName: 'Quantity', field: 'quant', width: 200}
 ])
 
 const onGridReady = useCallback((params) => {
@@ -276,9 +284,9 @@ const onGridReady = useCallback((params) => {
           // }}
           ref={gridRef}
           style={{ width: '100%', height: '100%' }}
-          rowSelection={'multiple'}
+          //rowSelection={'multiple'}
           animateRows={true}
-          rowMultiSelectWithClick={true}
+          //rowMultiSelectWithClick={true}
           rowData={ingredients}
           columnDefs={columnDefs}
           onGridReady={onGridReady}
@@ -309,13 +317,13 @@ const onGridReady = useCallback((params) => {
                   let upcCode = elem.upc;
                   let quantity = elem.quantity;
                   let data2 = await callAddToCartAPI(data.access_token, upcCode, quantity);
-                  console.log('data2__', data2)
-                });                
+                });
+                alert("Items added to https://www.kroger.com/cart cart");
               }
               addToCart();
              }
             } variant="contained" startIcon={<AddShoppingCart />} color="success" >
-            Add ingredients to Kroger cart
+            Add all ingredients to Kroger cart
           </Button>}
           <Button onClick={ () =>  window.location.href = 'https://api.kroger.com/v1/connect/oauth2/authorize?scope=cart.basic:write&response_type=code&client_id=foodappforschool-043e65debc535226ffbd8fa7ed03f8041525245609739767566&redirect_uri=https://starlit-twilight-fde55f.netlify.app/' } variant="contained" startIcon={<CheckCircle />} color="success" >
             Click here to login to add to your cart.
