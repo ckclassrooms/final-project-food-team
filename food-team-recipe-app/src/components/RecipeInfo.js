@@ -32,7 +32,7 @@ function callAddToCartAPI (code, upcCode, quantity) {
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url":  "https://api.kroger.com/v1/cart/add",
+      "url":  proxyurl + "https://api.kroger.com/v1/cart/add",
       "method": "PUT",
       "headers": {
         "Accept": "application/json",
