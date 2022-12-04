@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import {IconButton, Paper, Box, styled} from '@mui/material';
+import {CheckCircle, ChevronLeft, AddShoppingCart} from '@mui/icons-material';
 
 function SearchResult() {
     const { state } = useLocation();
@@ -19,6 +21,14 @@ function SearchResult() {
         getRecipes(query.query)// eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
+
+    const Item = styled(Paper)(({ theme }) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+        ...theme.typography.body2,
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+      }));
 
     async function getRecipes(query) {
         const proxyurl = 'https://corsproxy.io/?';
@@ -41,7 +51,21 @@ function SearchResult() {
               <ul>
                 {
                     results.map((recipe, index) => {
-                        return <div className="result" key={recipe.label}> <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {{recipe:recipe, auth:authCode, prodSearchAuth:productAuthCode, location:location}}>{recipe.label}</Link> Source: {recipe.source}</li> <br></br> </div>
+                        
+                        return <div className="result" key={recipe.label}> 
+                        <Box sx={{ width: '60%' }}>
+                         <Item className='recipeList'  key={recipe.label + index} onClick={() => navigate("/RecipeInfo", {state: {recipe:recipe, auth:authCode, prodSearchAuth:productAuthCode, location:location}})}> 
+                            <Stack spacing={10} direction="row">
+                                <img src={recipe.image} width="300" height="200" alt={recipe}></img> 
+                                <Stack spacing={0.5} style ={{display: 'flex', alignItems: "center", justifyContent: "center"}}>
+                                    <h1>{recipe.label}</h1> 
+                                    <h6 > Source: {recipe.source}</h6>
+                                </Stack>
+                            </Stack>
+                          
+                        </Item>
+                        </Box>
+                        </div>
                     })
                 }
               </ul>            
