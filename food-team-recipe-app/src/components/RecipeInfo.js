@@ -101,7 +101,7 @@ function RecipeInfo(props) {
   const data  = useLocation();
   const state = data.state.recipe;
   const auth_Code = data.state.auth;
-  const productSearchToken =  data.state.productAuthCode;
+  const productSearchToken =  data.state.prodSearchAuth;
   const location =  data.state.location;
   const [ingredients, setIngredients] = useState([]);
   const [url, setUrl] = useState("");
