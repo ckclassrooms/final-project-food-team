@@ -174,8 +174,13 @@ function RecipeInfo(props) {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken, location);
           console.log(data);
-          itemPrice = data[0].items[0].price.regular;
-          itemImage = data[0].images[0].sizes[4].url;
+          if(data[0].items[0].hasOwnProperty('price')) {
+            itemPrice = data[0].items[0].price.regular;
+          }
+          if(data[0].images[0].sizes.length >= 5) {
+            itemImage = data[0].images[0].sizes[4].url;
+          }
+          itemImage = data[0].images[0].sizes[0].url;
           tempUPCs.push({'upc': data[0].upc, 'quantity' : elem.quantity < 1 ? 1 : elem.quantity});
           tempIngredients.push({img: itemImage, ingredient : elem.food.toUpperCase(), desc: data[0].description, price:"$" + itemPrice
           , quant: data[0].items[0].size});
