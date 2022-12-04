@@ -118,7 +118,6 @@ function RecipeInfo(props) {
     if(state === null || state === undefined) {  
       navigate('/'); 
     } else {
-      console.log(productSearchToken, location);
       setAccessToken(productSearchToken);
             
       const tempIngredientList = [];
@@ -173,7 +172,6 @@ function RecipeInfo(props) {
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken, location);
-          console.log(data);
           itemPrice = data[0].items[0].price.regular;
           itemImage = data[0].images[0].sizes[4].url;
           let itemQuantity=1;
@@ -293,16 +291,11 @@ const onGridReady = useCallback((params) => {
           {hasAuthCode && <Button onClick={
              () => {
                 const addToCart = async () => {
-                console.log('auth__', authCode);
-                console.log('upc array', productUPCCodes);
                 let data = await callGetAddToCartToken(authCode);
-                console.log('data__', data)
                 await asyncForEach(productUPCCodes, async (elem) => {
-                  console.log('elem', elem)
                   let upcCode = elem.upc;
                   let quantity = elem.quantity;
                   let data2 = await callAddToCartAPI(data.access_token, upcCode, quantity);
-                  console.log('data2__', data2)
                 });                
               }
               addToCart();
