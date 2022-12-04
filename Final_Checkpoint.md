@@ -7,3 +7,27 @@ As our Final Checkpoint, we have come very close to implementating most of the f
 Our app can be used to search for recipes (resulting list will be displayed), view an individual recipes's ingredients, search for and select a store via the Kroger Api using the zip code, and add some or all of those ingredients to the Kroger cart using the Kroger cart api.
 
 
+How to Navigate through the website-
+1) This is the landing page of our app. Here, the user can search for Recipes using the search bar and also click on some of the listed common recipes.
+<img width="1439" alt="Screen Shot 2022-12-03 at 7 10 00 PM" src="https://user-images.githubusercontent.com/97759670/205469165-9b6d9322-8636-4a1b-9cac-aaace7b7734b.png">
+
+2) If we search for "pizza", this is the results page shown. Any individual recipe can be clicked here.
+<img width="1436" alt="Screen Shot 2022-12-03 at 7 13 19 PM" src="https://user-images.githubusercontent.com/97759670/205469245-bc4de88b-7a88-459a-89b8-dc15965402dd.png">
+
+3.1) This is the page that comes up when a recipe is clicked on. It has the link to the recipe instructions
+<img width="1436" alt="Screen Shot 2022-12-03 at 7 14 04 PM" src="https://user-images.githubusercontent.com/97759670/205469259-02484bb4-447e-4e38-b359-3d6c3dee6229.png">
+
+3.2) In the same page, the ingredients are also listed
+<img width="1439" alt="Screen Shot 2022-12-03 at 7 15 02 PM" src="https://user-images.githubusercontent.com/97759670/205469298-80ad4dc9-a695-4660-95e7-17fba7afec5a.png">
+
+3.3) Also, the option to select and buy the ingredients is given.
+If the user is authenticated, he/she will have the option to add items to cart
+<img width="1435" alt="Screen Shot 2022-12-03 at 7 15 46 PM" src="https://user-images.githubusercontent.com/97759670/205469320-da9d2335-286c-4be9-9584-69eeda7830ae.png">
+
+4) When the get store information is clicked on, this page can be used to search using the zipcode.
+<img width="1438" alt="Screen Shot 2022-12-03 at 7 17 24 PM" src="https://user-images.githubusercontent.com/97759670/205469359-e9a6c879-cf40-4f92-ae7a-7e6d777e9e42.png">
+
+5) This page show the Store names and addresses and the option to view the location in Google Maps
+<img width="1440" alt="Screen Shot 2022-12-03 at 7 18 16 PM" src="https://user-images.githubusercontent.com/97759670/205469382-92fb1fbb-2da0-486b-8284-ab18c7fe8292.png">
+
+
