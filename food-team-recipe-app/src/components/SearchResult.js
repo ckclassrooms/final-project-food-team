@@ -10,7 +10,6 @@ function SearchResult() {
     const authCode = state.auth;
     const productAuthCode= state.productAuthCode;
     const location=state.location;
-    console.log('authCode:', authCode);
     let navigate = useNavigate();
     const [results, setResults] = useState([]);
     let query = useParams();
