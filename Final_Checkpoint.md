@@ -8,7 +8,7 @@ Our app can be used to search for recipes (resulting list will be displayed), vi
 
 
 How to Navigate through the website-
-1) This is the landing page of our app. Here, the user can search for Recipes using the search bar and also click on some of the listed common recipes.
+1) This is the landing page of our app. Here, the user can search for Recipes using the search bar and also click on some of the listed common recipes. Also, the user can authenticate with Kroger by clicking on the red button if they want to add ingredients to cart.
 <img width="1439" alt="Screen Shot 2022-12-03 at 7 10 00 PM" src="https://user-images.githubusercontent.com/97759670/205469165-9b6d9322-8636-4a1b-9cac-aaace7b7734b.png">
 
 2) If we search for "pizza", this is the results page shown. Any individual recipe can be clicked here.
@@ -18,7 +18,8 @@ How to Navigate through the website-
 <img width="1436" alt="Screen Shot 2022-12-03 at 7 14 04 PM" src="https://user-images.githubusercontent.com/97759670/205469259-02484bb4-447e-4e38-b359-3d6c3dee6229.png">
 
 3.2) In the same page, the ingredients are also listed
-<img width="1439" alt="Screen Shot 2022-12-03 at 7 15 02 PM" src="https://user-images.githubusercontent.com/97759670/205469298-80ad4dc9-a695-4660-95e7-17fba7afec5a.png">
+<img width="748" alt="Screen Shot 2022-12-03 at 7 20 17 PM" src="https://user-images.githubusercontent.com/97759670/205469446-eea21452-17ef-4afe-b61e-c16502357c64.png">
+
 
 3.3) Also, the option to select and buy the ingredients is given.
 If the user is authenticated, he/she will have the option to add items to cart
