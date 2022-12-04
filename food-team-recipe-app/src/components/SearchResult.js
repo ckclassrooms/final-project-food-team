@@ -8,6 +8,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 function SearchResult() {
     const { state } = useLocation();
     const authCode = state.auth;
+    const productAuthCode= state.productAuthCode;
+    const location=state.location;
     console.log('authCode:', authCode);
     let navigate = useNavigate();
     const [results, setResults] = useState([]);
@@ -40,7 +42,7 @@ function SearchResult() {
               <ul>
                 {
                     results.map((recipe, index) => {
-                        return <div className="result" key={recipe.label}> <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {{recipe:recipe, auth:authCode}}>{recipe.label}</Link> Source: {recipe.source}</li> <br></br> </div>
+                        return <div className="result" key={recipe.label}> <li className='recipeList' key={recipe.label + index}> <img src={recipe.image} width="200" height="100" alt={recipe}></img> <Link to="/RecipeInfo" state = {{recipe:recipe, auth:authCode, productAuthCode:productAuthCode, location:location}}>{recipe.label}</Link> Source: {recipe.source}</li> <br></br> </div>
                     })
                 }
               </ul>            
