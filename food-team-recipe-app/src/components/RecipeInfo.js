@@ -32,7 +32,7 @@ function callAddToCartAPI (code, upcCode, quantity) {
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url":  proxyurl + "https://api.kroger.com/v1/cart/add",
+      "url":  "https://api.kroger.com/v1/cart/add",
       "method": "PUT",
       "headers": {
         "Accept": "application/json",
@@ -118,6 +118,7 @@ function RecipeInfo(props) {
     if(state === null || state === undefined) {  
       navigate('/'); 
     } else {
+      console.log(productSearchToken, location);
       setAccessToken(productSearchToken);
             
       const tempIngredientList = [];
@@ -172,17 +173,10 @@ function RecipeInfo(props) {
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken, location);
-
-          if(data[0].items[0].hasOwnProperty('price')){
-            itemPrice = data[0].items[0].price.regular;
-            if(itemImage = data[0].images[0].sizes.length <= 4) {itemImage = data[0].images[0].sizes[0].url;}
-            else{itemImage = data[0].images[0].sizes[4].url;}
-          }
-          
-          let itemQuantity=1;
-          if(elem.quantity < 1){itemQuantity=1;}
-          if(elem.quantity > 5){itemQuantity=5;}
-          tempUPCs.push({'upc': data[0].upc, 'quantity' : itemQuantity });
+          console.log(data);
+          itemPrice = data[0].items[0].price.regular;
+          itemImage = data[0].images[0].sizes[4].url;
+          tempUPCs.push({'upc': data[0].upc, 'quantity' : elem.quantity < 1 ? 1 : elem.quantity});
           tempIngredients.push({img: itemImage, ingredient : elem.food.toUpperCase(), desc: data[0].description, price:"$" + itemPrice
           , quant: data[0].items[0].size});
         });
@@ -306,13 +300,17 @@ const onGridReady = useCallback((params) => {
           {hasAuthCode && <Button onClick={
              () => {
                 const addToCart = async () => {
+                console.log('auth__', authCode);
+                console.log('upc array', productUPCCodes);
                 let data = await callGetAddToCartToken(authCode);
+                console.log('data__', data)
                 await asyncForEach(productUPCCodes, async (elem) => {
+                  console.log('elem', elem)
                   let upcCode = elem.upc;
                   let quantity = elem.quantity;
                   let data2 = await callAddToCartAPI(data.access_token, upcCode, quantity);
-                });
-                alert("Items added to cart");
+                  console.log('data2__', data2)
+                });                
               }
               addToCart();
              }
