@@ -32,7 +32,7 @@ function callAddToCartAPI (code, upcCode, quantity) {
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url": proxyurl + "https://api.kroger.com/v1/cart/add",
+      "url":  "https://api.kroger.com/v1/cart/add",
       "method": "PUT",
       "headers": {
         "Accept": "application/json",
@@ -75,12 +75,12 @@ function callGetAddToCartToken (code) {
 }
 
 // note proxy URL is probably need when working on developing
-function callProductAPI (ingredient, access_token) {
+function callProductAPI (ingredient, access_token, location) {
   return new Promise((resolve, reject) => {
   // https://api.kroger.com/v1/products?filter.brand={{BRAND}}&filter.term={{TERM}}&filter.locationId={{LOCATION_ID}}
     //const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
     const proxyurl = 'https://corsproxy.io/?';
-    const url = 'https://api.kroger.com/v1/products?filter.term=' + ingredient + '&filter.locationId=01400943';
+    const url = 'https://api.kroger.com/v1/products?filter.term=' + ingredient + '&filter.locationId=' + location;
     var settings = {
       "async": true,
       "crossDomain": true,
@@ -97,57 +97,12 @@ function callProductAPI (ingredient, access_token) {
   });
 }
 
-// function getProductDetails (PID, access_token) {
-//   // This API gets product details. ID is neccesary
-//   //https://api.kroger.com/v1/products/{{ID}}?filter.locationId={{LOCATION_ID}}
-//   const proxyurl = "https://mysterious-plains-32016.herokuapp.com/";
-//   // to do get product id's here
-//   const url = 'https://api.kroger.com/v1/products/'+ PID;
-//   var settings = {
-//     "async": true,
-//     "crossDomain": true,
-//     "url": proxyurl + url,
-//     "method": "GET",
-//     "headers": {
-//       "Accept": "application/json",
-//       // to do add the auth id here
-//       "Authorization": "Bearer " + access_token
-//     }
-//   }
-  
-//   $.ajax(settings).done(function (response) {
-//     console.log(response);
-//   });  
-// }
-
-// note proxy URL is probably need when working on developing
-function getKrogerAuth () { // set API auth token. Lasts for 30 min
-  return new Promise((resolve, reject) => {
-    const proxyurl = 'https://corsproxy.io/?';
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": proxyurl + "https://api.kroger.com/v1/connect/oauth2/token",
-      "method": "POST",
-      "headers": {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": "Basic Zm9vZGFwcGZvcnNjaG9vbC0wNDNlNjVkZWJjNTM1MjI2ZmZiZDhmYTdlZDAzZjgwNDE1MjUyNDU2MDk3Mzk3Njc1NjY6UXVEQ2JoMEFVSTViUy05SXJ1eWtYV01kQUN0clVZanN1TVRuRmVyLQ=="
-      },
-      "data": {
-        "grant_type": "client_credentials",
-        "scope": "product.compact"
-      }
-    }
-    $.ajax(settings).done(function (response) {
-      resolve(response)
-    });
-  });
-}
-
 function RecipeInfo(props) {
   const data  = useLocation();
   const state = data.state.recipe;
   const auth_Code = data.state.auth;
+  const productSearchToken =  data.state.prodSearchAuth;
+  const location =  data.state.location;
   const [ingredients, setIngredients] = useState([]);
   const [url, setUrl] = useState("");
   const [img, setImg] = useState(null);
@@ -163,11 +118,7 @@ function RecipeInfo(props) {
     if(state === null || state === undefined) {  
       navigate('/'); 
     } else {
-      async function fnAsync() {
-        let token = await getKrogerAuth();
-        setAccessToken( token.access_token ); // set API auth token. Lasts for 30 min
-      }
-      fnAsync()
+      setAccessToken(productSearchToken);
             
       const tempIngredientList = [];
       state.ingredients.forEach(elem => {
@@ -220,11 +171,13 @@ function RecipeInfo(props) {
       let itemImage = "";
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
-          let data = await callProductAPI(elem.food, accessToken);
-          console.log(data);
+          let data = await callProductAPI(elem.food, accessToken, location);
           itemPrice = data[0].items[0].price.regular;
           itemImage = data[0].images[0].sizes[4].url;
-          tempUPCs.push({'upc': data[0].upc, 'quantity' : 1});
+          let itemQuantity=1;
+          if(elem.quantity < 1){itemQuantity=1;}
+          if(elem.quantity > 5){itemQuantity=5;}
+          tempUPCs.push({'upc': data[0].upc, 'quantity' : itemQuantity });
           tempIngredients.push({img: itemImage, ingredient : elem.food.toUpperCase(), desc: data[0].description, price:"$" + itemPrice
           , quant: data[0].items[0].size});
         });
@@ -239,7 +192,7 @@ function RecipeInfo(props) {
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
     padding: theme.spacing(2),
-    textAlign: 'left',
+    textAlign: 'center',
     color: theme.palette.text.secondary,
   }));
 
@@ -249,7 +202,7 @@ const [columnDefs] = useState([
     headerCheckboxSelection: true,
     checkboxSelection: true,
     showDisabledCheckboxes: true,
-    width: "200"
+    width: "250"
   },
   {
     headerName: "",
@@ -259,14 +212,14 @@ const [columnDefs] = useState([
       return <img src={params.value} width="auto" height="100"></img>;
     }
   },
-  { field: 'ingredient', width: "300" },
+  { field: 'ingredient', width: "250" },
   {
     headerName: 'Description',
     field: 'desc',
     wrapText: true,
-    width: "500"
+    width: "350"
   },
-  { headerName: 'Price($)', field: 'price', width: "100"},
+  { headerName: 'Price($) at your location', field: 'price', width: "250"},
   { headerName: 'Quantity', field: 'quant', width: "150"}
 ])
 
@@ -278,32 +231,42 @@ const onGridReady = useCallback((params) => {
 
   return (
     <>
-      <div style={{'padding-left': '40px'}}>
-        <>
-          <h1>{recipeName}</h1>
-          <IconButton size="small" color="primary" aria-label="link to website" component="label">
-            <a target="_blank" rel="noreferrer" href={url}>Link to Recipe</a>
-            <Link size="large" />
-          </IconButton>
-        </>
+      <h1 style={{ display: "flex",
+              alignItems: "center",
+              justifyContent: "center"}}>{recipeName}</h1>
+      <div style={{'alignItems': 'center'}}>
+          <Stack spacing={0.5} direction="row" >
+            <div style={{'padding-left': '40px'}}>
+              <>
+                <IconButton size="small" color="primary" aria-label="link to website" component="label">
+                  <a target="_blank" rel="noreferrer" href={url}>Link to Recipe</a>
+                  <Link size="large" />
+                </IconButton>
+              </>
+              <br/>
+              <img src={img} width="800" height="550" alt={recipeName} aria-label={recipeName}></img>
+              <br/>
+            </div>
+          <br/>
+          <div className='recipePrep' style={{'padding-left': '40px'}}>
+          <br/>
+          <h2 style={{ display: "flex",
+              alignItems: "center",
+              justifyContent: "center"}}>{state.ingredients.length} ingredients: </h2>
+          <Box sx={{ width: '100%' }}>
+            <Stack spacing={0.5} >
+              {state === null? null : state.ingredients.map(elem => {
+                return <Item className='ingredientList' key={elem.food}>{elem.text.toUpperCase()}</Item>
+              })}
+            </Stack>
+          </Box>
+        </div>
         <br/>
-        <img src={img} width="auto" height="auto" alt={recipeName} aria-label={recipeName}></img>
-        <br/>
-      </div>
-      <br/>
-      <div className='recipePrep' style={{'padding-left': '40px'}}>
-        <h2>{state.ingredients.length} Ingredients: </h2>
-        <Box sx={{ width: '100%', display: 'flex'}}>
-          <Stack spacing={0.5}>
-            {state === null? null : state.ingredients.map(elem => {
-              return <Item className='ingredientList' key={elem.food}>{elem.text.toUpperCase()}</Item>
-            })}
           </Stack>
-        </Box>
-      </div>
-      <br/>
-      
-      <div className="ag-theme-alpine" style={{height: '70vh', width: '90vw'}}>
+       </div>
+       <br/>
+       <br/>
+      <div className="ag-theme-alpine" style={{height: '70vh', width: '90vw', 'padding-left': '75px'}}>
         <AgGridReact
           // defaultColDef={{
           //   cellStyle: () => ({
@@ -313,7 +276,7 @@ const onGridReady = useCallback((params) => {
           //   })
           // }}
           ref={gridRef}
-          style={{ display: 'flex', width: '100%', height: '100%'}}
+          style={{ width: '100%', height: '100%' }}
           rowSelection={'multiple'}
           animateRows={true}
           rowMultiSelectWithClick={true}
@@ -329,7 +292,7 @@ const onGridReady = useCallback((params) => {
         
       </div>
       <br></br>
-      <div style={{'padding-left': '40px'}}>
+      <div>
         <Stack direction="row" spacing={60}>
           <Button onClick={() => navigate(-1)} variant="contained" startIcon={<ChevronLeft />} color="error" >
             Go Back
@@ -338,25 +301,20 @@ const onGridReady = useCallback((params) => {
           {hasAuthCode && <Button onClick={
              () => {
                 const addToCart = async () => {
-                console.log('auth__', authCode);
-                console.log('upc array', productUPCCodes);
                 let data = await callGetAddToCartToken(authCode);
-                console.log('data__', data)
                 await asyncForEach(productUPCCodes, async (elem) => {
-                  console.log('elem', elem)
                   let upcCode = elem.upc;
                   let quantity = elem.quantity;
                   let data2 = await callAddToCartAPI(data.access_token, upcCode, quantity);
-                  console.log('data2__', data2)
                 });                
               }
               addToCart();
-             } /* to do call Kroger Api with product UPC's */ 
+             }
             } variant="contained" startIcon={<AddShoppingCart />} color="success" >
             Add ingredients to Kroger cart
           </Button>}
-          <Button onClick={ () => navigate("/StoreLocator", {state : {ingredients:ingredients, access_Token : accessToken} } ) } variant="contained" startIcon={<CheckCircle />} color="success" >
-            Get store information
+          <Button onClick={ () =>  window.location.href = 'https://api.kroger.com/v1/connect/oauth2/authorize?scope=cart.basic:write&response_type=code&client_id=foodappforschool-043e65debc535226ffbd8fa7ed03f8041525245609739767566&redirect_uri=https://starlit-twilight-fde55f.netlify.app/' } variant="contained" startIcon={<CheckCircle />} color="success" >
+            Click here to login to add to your cart.
           </Button>
           </Stack>
         </Stack>
