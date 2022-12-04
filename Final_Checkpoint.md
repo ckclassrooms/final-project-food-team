@@ -17,6 +17,7 @@ How to Navigate through the website-
 <img width="1439" alt="Screen Shot 2022-12-03 at 7 10 00 PM" src="https://user-images.githubusercontent.com/97759670/205469165-9b6d9322-8636-4a1b-9cac-aaace7b7734b.png">
 
 3.1) Also, the user can give us permission to add items to their kroger.com cart by clicking on the red button if they want to add ingredients to their Kroger.com cart.
+
 <img width="648" alt="Screenshot 2022-12-03 at 9 04 47 PM" src="https://user-images.githubusercontent.com/57426824/205472216-dedd9a9e-bea7-4384-8734-8f9cf124a614.png">
 
 3.2) If they would like to add items to their cart they have to sign in to their kroger.com account using oauth
@@ -42,11 +43,11 @@ If the user is authenticated, he/she will have the option to add items to cart
 <img width="1435" alt="Screen Shot 2022-12-03 at 7 15 46 PM" src="https://user-images.githubusercontent.com/97759670/205469320-da9d2335-286c-4be9-9584-69eeda7830ae.png">
 
 5) On this page, If the user is authenticated, he/she will have the option to add items to cart
-6) 
+
 <img width="1129" alt="Screenshot 2022-12-03 at 9 09 01 PM" src="https://user-images.githubusercontent.com/57426824/205472331-d4c470ec-cd51-4fbc-b795-7ffea2ad09ad.png">
 
 6) If they click the button, we call the kroger API to add the items to their kroger.com cart and it will be added for them on https://www.kroger.com/cart
-7) 
+
 <img width="1453" alt="Screenshot 2022-12-03 at 9 11 09 PM" src="https://user-images.githubusercontent.com/57426824/205472384-4368e0f0-0835-44c8-bd43-870c913088ee.png">
 
 
