@@ -204,29 +204,29 @@ function RecipeInfo(props) {
   }));
 
 const [columnDefs] = useState([
+  // {
+  //   field: 'Add to order',
+  //   headerCheckboxSelection: true,
+  //   checkboxSelection: true,
+  //   showDisabledCheckboxes: true,
+  //   width: "260"
+  // },
   {
-    field: 'Add to order',
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    showDisabledCheckboxes: true,
-    width: "260"
-  },
-  {
-    headerName: "",
+    headerName: "Image",
     field: 'img',
     autoHeight: true,
     cellRenderer: function(params) {
       return <img src={params.value} width="auto" height="100"></img>;
     }
   },
-  { field: 'ingredient', width: "200" },
+  { field: 'ingredient', width: 200},
   {
     headerName: 'Description',
     field: 'desc',
     wrapText: true,
     width: 500
   },
-  { headerName: 'Price($) at your location', field: 'price', width: "250"},
+  { headerName: 'Price($) at your location', field: 'price', width: 250},
   { headerName: 'Quantity', field: 'quant', width: 200}
 ])
 
