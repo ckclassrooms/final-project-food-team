@@ -167,15 +167,18 @@ function RecipeInfo(props) {
     } else {
       let tempIngredients = [];
       let tempUPCs = [];
-      let itemPrice = 'N/A';
-      let itemImage = "";
+      let itemPrice = 'Out of Stock';
+      let itemImage = noimg;
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken, location);
-          if(data[0].items[0].price.regular !== undefined || data[0].items[0].price.regular !== null) {
+
+          if(data[0].items[0].hasOwnProperty('price')){
             itemPrice = data[0].items[0].price.regular;
+            if(itemImage = data[0].images[0].sizes.length <= 4) {itemImage = data[0].images[0].sizes[0].url;}
+            else{itemImage = data[0].images[0].sizes[4].url;}
           }
-          itemImage = data[0].images[0].sizes[4].url;
+          
           let itemQuantity=1;
           if(elem.quantity < 1){itemQuantity=1;}
           if(elem.quantity > 5){itemQuantity=5;}
