@@ -75,12 +75,12 @@ function callGetAddToCartToken (code) {
 }
 
 // note proxy URL is probably need when working on developing
-function callProductAPI (ingredient, access_token) {
+function callProductAPI (ingredient, access_token, location) {
   return new Promise((resolve, reject) => {
   // https://api.kroger.com/v1/products?filter.brand={{BRAND}}&filter.term={{TERM}}&filter.locationId={{LOCATION_ID}}
     //const proxyurl = "https://mysterious-plains-32016.herokuapp.com/"; // a server thats lets me work in dev since cors blocks the API.
     const proxyurl = 'https://corsproxy.io/?';
-    const url = 'https://api.kroger.com/v1/products?filter.term=' + ingredient + '&filter.locationId=01400943';
+    const url = 'https://api.kroger.com/v1/products?filter.term=' + ingredient + '&filter.locationId=' + location;
     var settings = {
       "async": true,
       "crossDomain": true,
@@ -172,7 +172,7 @@ function RecipeInfo(props) {
       let itemImage = "";
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
-          let data = await callProductAPI(elem.food, accessToken);
+          let data = await callProductAPI(elem.food, accessToken, location);
           console.log(data);
           itemPrice = data[0].items[0].price.regular;
           itemImage = data[0].images[0].sizes[4].url;
