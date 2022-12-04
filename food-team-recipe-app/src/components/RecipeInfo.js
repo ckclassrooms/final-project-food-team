@@ -68,7 +68,7 @@ function callGetAddToCartToken (code) {
       }
     }
     $.ajax(settings).fail(function (response) {
-      reject(alert('Add to cart failed, please reload the application from the start to get new tokens.'));
+      reject(alert('Add to cart failed, please close the application completely to get new API tokens.'));
     });
     $.ajax(settings).done(function (response) {
       // /* https://starlit-twilight-fde55f.netlify.app/ */ http://localhost:3000/
