@@ -181,7 +181,10 @@ function RecipeInfo(props) {
             itemImage = data[0].images[0].sizes[4].url;
           }
           itemImage = data[0].images[0].sizes[0].url;
-          tempUPCs.push({'upc': data[0].upc, 'quantity' : elem.quantity < 1 ? 1 : elem.quantity});
+          let itemQuantity=1;
+          if(elem.quantity < 1){itemQuantity=1;}
+          if(elem.quantity > 5){itemQuantity=5;}
+          tempUPCs.push({'upc': data[0].upc, 'quantity' : itemQuantity });
           tempIngredients.push({img: itemImage, ingredient : elem.food.toUpperCase(), desc: data[0].description, price:"$" + itemPrice
           , quant: data[0].items[0].size});
         });
