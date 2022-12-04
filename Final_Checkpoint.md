@@ -20,9 +20,11 @@ How to Navigate through the website-
 <img width="648" alt="Screenshot 2022-12-03 at 9 04 47 PM" src="https://user-images.githubusercontent.com/57426824/205472216-dedd9a9e-bea7-4384-8734-8f9cf124a614.png">
 
 3.2) If they would like to add items to their cart they have to sign in to their kroger.com account using oauth
+
 <img width="542" alt="Screenshot 2022-12-03 at 9 05 47 PM" src="https://user-images.githubusercontent.com/57426824/205472247-6e4cc1cb-0888-4813-bb88-2639c08b4ce0.png">
 
 3.2) After logging in they will be redirect back, and have to find their store again but now they have confirmation they are verified with the green button
+
 <img width="880" alt="Screenshot 2022-12-03 at 9 06 54 PM" src="https://user-images.githubusercontent.com/57426824/205472287-fa0990c0-8ae1-48cb-a54f-083d0684bf33.png">
 
 4) If we search for "pizza", this is the results page shown. Any individual recipe can be clicked here.
@@ -36,12 +38,15 @@ How to Navigate through the website-
 
 4.3) Also, the option to select and buy the ingredients is given and the prices from the store that they previously selected are displayed.
 If the user is authenticated, he/she will have the option to add items to cart
+
 <img width="1435" alt="Screen Shot 2022-12-03 at 7 15 46 PM" src="https://user-images.githubusercontent.com/97759670/205469320-da9d2335-286c-4be9-9584-69eeda7830ae.png">
 
 5) On this page, If the user is authenticated, he/she will have the option to add items to cart
+6) 
 <img width="1129" alt="Screenshot 2022-12-03 at 9 09 01 PM" src="https://user-images.githubusercontent.com/57426824/205472331-d4c470ec-cd51-4fbc-b795-7ffea2ad09ad.png">
 
 6) If they click the button, we call the kroger API to add the items to their kroger.com cart and it will be added for them on https://www.kroger.com/cart
+7) 
 <img width="1453" alt="Screenshot 2022-12-03 at 9 11 09 PM" src="https://user-images.githubusercontent.com/57426824/205472384-4368e0f0-0835-44c8-bd43-870c913088ee.png">
 
 
