@@ -6,7 +6,13 @@ And optionally give users information about nutrition about the recipe from thes
 As our Final Checkpoint, we have come very close to implementating most of the features that we sought to, even though haven't been able to provide the 'extra' functionality like recommendations due to time constraints.
 Our app (deployed on Netlify, built using React, Recipe Api, Kroger Api, Kroger Cart Api) can be used to search for recipes (resulting list will be displayed), view an individual recipes's ingredients, search for and select a store via the Kroger Api using the zip code, and add some or all of those ingredients to the Kroger cart using the Kroger cart api.
 
-How to Navigate through the website-
+# Video brief overview:
+
+
+https://user-images.githubusercontent.com/57426824/205478908-cf01fc01-6300-48f6-9746-7b30d35bb086.mov
+
+# How to Navigate through the website
+
 1) This is the landing page of our app, first the user must search for a Kroger store using your zipcode.
 <img width="1438" alt="Screen Shot 2022-12-03 at 7 17 24 PM" src="https://user-images.githubusercontent.com/97759670/205469359-e9a6c879-cf40-4f92-ae7a-7e6d777e9e42.png">
 
