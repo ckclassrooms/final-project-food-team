@@ -10,7 +10,7 @@ How to Navigate through the website-
 1) This is the landing page of our app, first the user must search for a Kroger store using your zipcode.
 <img width="1438" alt="Screen Shot 2022-12-03 at 7 17 24 PM" src="https://user-images.githubusercontent.com/97759670/205469359-e9a6c879-cf40-4f92-ae7a-7e6d777e9e42.png">
 
-2) This page show the Store names and addresses and the option to view the location in Google Maps. Once the user clicks a row, we save that information to display the prices of the items from that location in later pages.
+2) After searching your zipcode, this page show the Store names and addresses clostest and the option to view the location in Google Maps. Once the user clicks a row, we save that information to display the prices of the items from that location in later pages.
 <img width="1440" alt="Screen Shot 2022-12-03 at 7 18 16 PM" src="https://user-images.githubusercontent.com/97759670/205469382-92fb1fbb-2da0-486b-8284-ab18c7fe8292.png">
 
 3) Next, the user can search for Recipes using the search bar and also click on some of the listed common recipes. Also, the user can authenticate with Kroger by clicking on the red button if they want to add ingredients to their Kroger.com cart.
@@ -25,7 +25,7 @@ How to Navigate through the website-
 4.2) In the same page, the ingredients are also listed
 <img width="748" alt="Screen Shot 2022-12-03 at 7 20 17 PM" src="https://user-images.githubusercontent.com/97759670/205469446-eea21452-17ef-4afe-b61e-c16502357c64.png">
 
-4.3) Also, the option to select and buy the ingredients is given.
+4.3) Also, the option to select and buy the ingredients is given and the prices from the store that they previously selected are displayed.
 If the user is authenticated, he/she will have the option to add items to cart
 <img width="1435" alt="Screen Shot 2022-12-03 at 7 15 46 PM" src="https://user-images.githubusercontent.com/97759670/205469320-da9d2335-286c-4be9-9584-69eeda7830ae.png">
 
