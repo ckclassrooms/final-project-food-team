@@ -46,7 +46,7 @@ If the user is authenticated, he/she will have the option to add items to cart
 
 <img width="1129" alt="Screenshot 2022-12-03 at 9 09 01 PM" src="https://user-images.githubusercontent.com/57426824/205472331-d4c470ec-cd51-4fbc-b795-7ffea2ad09ad.png">
 
-6) If they click the button, we call the kroger API to add the items to their kroger.com cart and it will be added for them on https://www.kroger.com/cart
+6) If they click the button, we call the kroger API to add the items to their kroger.com cart and it will be added for them on https://www.kroger.com/cart and display a popup.
 
 <img width="1453" alt="Screenshot 2022-12-03 at 9 11 09 PM" src="https://user-images.githubusercontent.com/57426824/205472384-4368e0f0-0835-44c8-bd43-870c913088ee.png">
 
