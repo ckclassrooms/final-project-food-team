@@ -76,11 +76,8 @@ function Landing() {
   useEffect(() => {
     fnAsync();
     const queryParams = new URLSearchParams(window.location.search);
-    console.log('URL:', queryParams);
     const authCode1 = queryParams.get('code');
     const authCode2 = sessionStorage.getItem('krog_auth');
-    console.log("authCode1 " + authCode1)
-    console.log("authCode2 "+authCode2)
     if(authCode1 !== null) {
       setCartAuthorizationCode(authCode1);
       sessionStorage.setItem('krog_auth', authCode1);
@@ -130,17 +127,16 @@ function Landing() {
       checkboxSelection: true,
       showDisabledCheckboxes: true,
       resizable: true,
-      width: "150" 
+      width: 150 
     },
-    { headerName: 'Store Name', field: 'name', width: "400" , resizable: true, wrapText: true, autoHeight: true },
-    { headerName: 'Address', field: 'address', resizable: true, width: "350", wrapText: true, autoHeight: true,
+    { headerName: 'Store Name', field: 'name', width: 400 , resizable: true, wrapText: true, autoHeight: true },
+    { headerName: 'Address', field: 'address', resizable: true, width: 350, wrapText: true, autoHeight: true,
         cellRenderer: function(params) {
           let url = "https://maps.google.com?q=" + params.value.name
-          console.log(url)
           return <a href= {url} target="_blank"> {params.value.addr} </a>
         }
     },
-    { headerName: 'Departments', field: 'dep', width: "350", resizable: true, autoHeight: true }
+    { headerName: 'Departments', field: 'dep', width: 350, resizable: true, autoHeight: true }
   ])
 
   const onGridReady = useCallback((params) => {
