@@ -204,29 +204,29 @@ function RecipeInfo(props) {
   }));
 
 const [columnDefs] = useState([
-  // {
-  //   field: '',
-  //   // headerCheckboxSelection: true,
-  //   // checkboxSelection: true,
-  //   showDisabledCheckboxes: true,
-  //   width: 50
-  // },
   {
-    headerName: "Image",
+    field: 'Add to order',
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    showDisabledCheckboxes: true,
+    width: "260"
+  },
+  {
+    headerName: "",
     field: 'img',
     autoHeight: true,
     cellRenderer: function(params) {
       return <img src={params.value} width="auto" height="100"></img>;
     }
   },
-  { field: 'ingredient', width: 200 },
+  { field: 'ingredient', width: "200" },
   {
     headerName: 'Description',
     field: 'desc',
     wrapText: true,
     width: 500
   },
-  { headerName: 'Price($) at your location', field: 'price', width: 250},
+  { headerName: 'Price($) at your location', field: 'price', width: "250"},
   { headerName: 'Quantity', field: 'quant', width: 200}
 ])
 
@@ -284,9 +284,9 @@ const onGridReady = useCallback((params) => {
           // }}
           ref={gridRef}
           style={{ width: '100%', height: '100%' }}
-          //rowSelection={'multiple'}
+          rowSelection={'multiple'}
           animateRows={true}
-          //rowMultiSelectWithClick={true}
+          rowMultiSelectWithClick={true}
           rowData={ingredients}
           columnDefs={columnDefs}
           onGridReady={onGridReady}
