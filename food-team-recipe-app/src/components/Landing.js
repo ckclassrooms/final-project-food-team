@@ -84,9 +84,9 @@ function Landing() {
     } else if(authCode2 !== null) {
       setCartAuthorizationCode(authCode2);
     }
-    if (sessionStorage.getItem('zip_code') !== null) {
-      setLocationID(sessionStorage.getItem('zip_code'));
-    }
+    // if (sessionStorage.getItem('zip_code') !== null) {
+    //   setLocationID(sessionStorage.getItem('zip_code'));
+    // }
 
     // console.log(authCode);
     // console.log(typeof (authCode));// eslint-disable-next-line react-hooks/exhaustive-deps
