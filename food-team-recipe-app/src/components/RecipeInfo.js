@@ -167,12 +167,14 @@ function RecipeInfo(props) {
     } else {
       let tempIngredients = [];
       let tempUPCs = [];
-      let itemPrice = 0;
+      let itemPrice = 'N/A';
       let itemImage = "";
       const start = async () => {
         await asyncForEach(state.ingredients, async (elem) => {
           let data = await callProductAPI(elem.food, accessToken, location);
-          itemPrice = data[0].items[0].price.regular;
+          if(data[0].items[0].price.regular !== undefined || data[0].items[0].price.regular !== null) {
+            itemPrice = data[0].items[0].price.regular;
+          }
           itemImage = data[0].images[0].sizes[4].url;
           let itemQuantity=1;
           if(elem.quantity < 1){itemQuantity=1;}
