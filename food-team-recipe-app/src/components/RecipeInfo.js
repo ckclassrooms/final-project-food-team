@@ -32,7 +32,7 @@ function callAddToCartAPI (code, upcCode, quantity) {
     var settings = {
       "async": true,
       "crossDomain": true,
-      "url": "https://api.kroger.com/v1/cart/add",
+      "url": proxyurl + "https://api.kroger.com/v1/cart/add",
       "method": "PUT",
       "headers": {
         "Accept": "application/json",
@@ -97,57 +97,12 @@ function callProductAPI (ingredient, access_token) {
   });
 }
 
-// function getProductDetails (PID, access_token) {
-//   // This API gets product details. ID is neccesary
-//   //https://api.kroger.com/v1/products/{{ID}}?filter.locationId={{LOCATION_ID}}
-//   const proxyurl = "https://mysterious-plains-32016.herokuapp.com/";
-//   // to do get product id's here
-//   const url = 'https://api.kroger.com/v1/products/'+ PID;
-//   var settings = {
-//     "async": true,
-//     "crossDomain": true,
-//     "url": proxyurl + url,
-//     "method": "GET",
-//     "headers": {
-//       "Accept": "application/json",
-//       // to do add the auth id here
-//       "Authorization": "Bearer " + access_token
-//     }
-//   }
-  
-//   $.ajax(settings).done(function (response) {
-//     console.log(response);
-//   });  
-// }
-
-// note proxy URL is probably need when working on developing
-function getKrogerAuth () { // set API auth token. Lasts for 30 min
-  return new Promise((resolve, reject) => {
-    const proxyurl = 'https://corsproxy.io/?';
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": proxyurl + "https://api.kroger.com/v1/connect/oauth2/token",
-      "method": "POST",
-      "headers": {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": "Basic Zm9vZGFwcGZvcnNjaG9vbC0wNDNlNjVkZWJjNTM1MjI2ZmZiZDhmYTdlZDAzZjgwNDE1MjUyNDU2MDk3Mzk3Njc1NjY6UXVEQ2JoMEFVSTViUy05SXJ1eWtYV01kQUN0clVZanN1TVRuRmVyLQ=="
-      },
-      "data": {
-        "grant_type": "client_credentials",
-        "scope": "product.compact"
-      }
-    }
-    $.ajax(settings).done(function (response) {
-      resolve(response)
-    });
-  });
-}
-
 function RecipeInfo(props) {
   const data  = useLocation();
   const state = data.state.recipe;
   const auth_Code = data.state.auth;
+  const productSearchToken =  data.state.productAuthCode;
+  const location =  data.state.location;
   const [ingredients, setIngredients] = useState([]);
   const [url, setUrl] = useState("");
   const [img, setImg] = useState(null);
@@ -163,11 +118,8 @@ function RecipeInfo(props) {
     if(state === null || state === undefined) {  
       navigate('/'); 
     } else {
-      async function fnAsync() {
-        let token = await getKrogerAuth();
-        setAccessToken( token.access_token ); // set API auth token. Lasts for 30 min
-      }
-      fnAsync()
+      console.log(productSearchToken, location);
+      setAccessToken(productSearchToken);
             
       const tempIngredientList = [];
       state.ingredients.forEach(elem => {
@@ -266,7 +218,7 @@ const [columnDefs] = useState([
     wrapText: true,
     width: "500"
   },
-  { headerName: 'Price($)', field: 'price', width: "100"},
+  { headerName: 'Price($) at your location', field: 'price', width: "100"},
   { headerName: 'Quantity', field: 'quant', width: "150"}
 ])
 
@@ -351,12 +303,12 @@ const onGridReady = useCallback((params) => {
                 });                
               }
               addToCart();
-             } /* to do call Kroger Api with product UPC's */ 
+             }
             } variant="contained" startIcon={<AddShoppingCart />} color="success" >
             Add ingredients to Kroger cart
           </Button>}
-          <Button onClick={ () => navigate("/StoreLocator", {state : {ingredients:ingredients, access_Token : accessToken} } ) } variant="contained" startIcon={<CheckCircle />} color="success" >
-            Get store information
+          <Button onClick={ () =>  window.location.href = 'https://api.kroger.com/v1/connect/oauth2/authorize?scope=cart.basic:write&response_type=code&client_id=foodappforschool-043e65debc535226ffbd8fa7ed03f8041525245609739767566&redirect_uri=https://starlit-twilight-fde55f.netlify.app/' } variant="contained" startIcon={<CheckCircle />} color="success" >
+            Click here to login to add to your cart.
           </Button>
           </Stack>
         </Stack>
